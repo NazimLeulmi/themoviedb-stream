@@ -1,0 +1,84 @@
+#bar{
+    width:100%;
+    height:100px;
+    display:flex;
+    flex-direction: column;
+    position:relative;
+}
+
+/* input search logo */
+#search-logo{
+    position:absolute;
+    bottom:7.5px;
+    left:5px;
+}
+
+/* navigation bar logo */
+#movies-logo{
+    width:50px;
+    height:50px;
+    cursor: pointer;
+}
+
+#logo-header{
+    color:#01d277;
+    margin:5px;
+    font-weight:bold;
+    font-size:20px;
+}
+
+#movies-menu{
+    position:absolute;
+    right:10px;
+    cursor: pointer;
+}
+
+/* navigation div */
+#nav{
+    width:100%;
+    height:65px;
+    display:flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 0 10px 0 10px;
+}
+/* text input */
+#search {
+    width:100%;
+    height:35px;
+    background-color: #282C34;
+    color:white;
+    border:0px;
+    outline:0px;
+    border-top:0.5px solid gray;
+    border-bottom:0.5px solid gray;
+    cursor: pointer;
+    padding-left:30px;
+}
+
+#movies-container{
+}
+
+#links-list {
+    width:auto;
+    margin-top:10px;
+    margin-left:5px;
+}
+
+.get-btn{
+    margin-bottom:10px;
+    height:40px;
+    background:transparent;
+    color:white;
+    margin:5px;
+    outline:0px;
+    border:1px solid gray;
+    border-radius:5px;
+    padding:5px;
+}
+
+.get-btn-on{
+    background:gray;
+}
+

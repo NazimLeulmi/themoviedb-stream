@@ -38,7 +38,7 @@ class Home extends Component {
         if (this.state.password.length < 8) {
             errors.password = "the password has to be at least 8 characters"
         }
-        if (this.state.password !== this.state.passwordc) {
+        if (!this.state.login && this.state.password !== this.state.passwordc) {
             errors.passwordc = "the two passwords must match";
         }
         if (errors.email + errors.password + errors.passwordc !== "") {
@@ -49,31 +49,35 @@ class Home extends Component {
     }
 
     submitForm = () => {
-        if (this.state.login) {
-            // submit sign in form
-            axios.post("http://localhost:3333/signin", {
-                email: this.state.email,
-                password: this.state.password,
-            })
-                .then(function (response) {
-                    console.log(response);
+        if (this.validate() === true) {
+            if (this.state.login) {
+                // submit sign in form
+                axios.post("http://localhost:3333/signin", {
+                    email: this.state.email,
+                    password: this.state.password,
                 })
-                .catch(function (error) {
-                    console.log(error);
-                });
+                    .then(function (response) {
+                        console.log(response);
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            } else {
+                // submit sign up form
+                axios.post("http://localhost:3333/signup", {
+                    email: this.state.email,
+                    password: this.state.password,
+                    passwordc: this.state.passwordc
+                })
+                    .then(function (response) {
+                        console.log(response);
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            }
         } else {
-            // submit sign up form
-            axios.post("http://localhost:3333/signup", {
-                email: this.state.email,
-                password: this.state.password,
-                passwordc: this.state.passwordc
-            })
-                .then(function (response) {
-                    console.log(response);
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
+            console.log("Form Inputs are Invalid");
         }
     }
 
@@ -82,7 +86,8 @@ class Home extends Component {
             login: !this.state.login,
             email: "",
             password: "",
-            passwordc: ""
+            passwordc: "",
+            errors: { email: "", password: "", passwordc: "" }
         })
     }
 
@@ -112,6 +117,7 @@ class Home extends Component {
                         />
                         <Mail size={20} color="#00D474" className="input-logo" />
                     </div>
+                    {this.state.errors.email ? <p className="error">{this.state.errors.email}</p> : null}
                     <div className="form-group">
                         <input className="form-input" type="password" name="password"
                             spellCheck="false" autoCorrect="false"
@@ -122,6 +128,7 @@ class Home extends Component {
                         />
                         <Lock size={20} color="#00D474" className="input-logo" />
                     </div>
+                    {this.state.errors.password ? <p className="error">{this.state.errors.password}</p> : null}
                     {this.state.login === false ?
                         <div className="form-group">
                             <input className="form-input" type="password" name="passwordc"
@@ -134,6 +141,7 @@ class Home extends Component {
                             <Lock size={20} color="#00D474" className="input-logo" />
                         </div> : null
                     }
+                    {this.state.errors.passwordc ? <p className="error">{this.state.errors.passwordc}</p> : null}
                     {this.state.login ?
                         <p className="form-text forget" name="forget">RESET THE PASSWORD</p> : null
                     }

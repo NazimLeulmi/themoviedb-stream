@@ -100,7 +100,7 @@ class Movies extends Component {
                     {this.state.movies ? this.state.movies.map((movie, i) => (
                         <div className="movie" key={i}>
                             <div className="poster-overlay" />
-                            <img src={movie.poster_path || movie.backdrop_path ?
+                            <img alt="poster" src={movie.poster_path || movie.backdrop_path ?
                                 `https://image.tmdb.org/t/p/original${movie.backdrop_path || movie.poster_path}` :
                                 NoImage
                             }

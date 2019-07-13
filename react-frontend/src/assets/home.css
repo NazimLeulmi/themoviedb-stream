@@ -2,7 +2,7 @@
     width:100vw;
     height:100vh;
     position:relative;
-    background-color:rgba(0,0,0,.75);
+    background-color:rgba(0,0,0,.85);
     z-index:500;
 }
 .background {
@@ -114,4 +114,12 @@
     text-align:right;
     text-decoration-color:#00D474;
     cursor: pointer;
+}
+
+.error {
+    color:red;
+    font-size:12px;
+    font-family: Roboto;
+    width:80%;
+    text-align: left;
 }

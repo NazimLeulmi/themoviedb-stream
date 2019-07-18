@@ -12,6 +12,7 @@ function validateEmail(email) {
 class Home extends Component {
     state = {
         login: true,
+        registered: false,
         email: "",
         password: "",
         passwordc: "",
@@ -30,15 +31,22 @@ class Home extends Component {
         }
     }
     // Form Inputs Client Side Validation
-    validate = () => {
+    validateSignUp = () => {
         let errors = { email: "", password: "", passwordc: "" }
-        if (validateEmail(this.state.email) === false) {
+        let { email, password, passwordc } = this.state;
+        if (email === null || email === undefined || email === "") {
+            errors.email = "the email is a required field";
+        }
+        else if (validateEmail(email) === false) {
             errors.email = "the email is invalid";
         }
-        if (this.state.password.length < 8) {
+        if (password === null || password === undefined || password === "") {
+            errors.password = "the password is a required field"
+        }
+        else if (password.length < 8) {
             errors.password = "the password has to be at least 8 characters"
         }
-        if (!this.state.login && this.state.password !== this.state.passwordc) {
+        if (password !== "" && passwordc !== password) {
             errors.passwordc = "the two passwords must match";
         }
         if (errors.email + errors.password + errors.passwordc !== "") {
@@ -49,41 +57,52 @@ class Home extends Component {
     }
 
     submitForm = () => {
-        if (this.validate() === true) {
-            if (this.state.login) {
-                // submit sign in form
-                axios.post("http://localhost:3333/signin", {
-                    email: this.state.email,
-                    password: this.state.password,
+        if (this.state.login) {
+            // submit sign in form
+            axios.post("http://192.168.0.10:3333/signin", {
+                email: this.state.email,
+                password: this.state.password,
+            })
+                .then(response => {
+                    this.setState({ errors: response.data.errors });
+                    if (response.data.login) {
+                        this.props.history.push("/movies");
+                    }
                 })
-                    .then(function (response) {
-                        console.log(response);
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    });
-            } else {
+                .catch(error => {
+                    console.log(error);
+                });
+        } else {
+            if (this.validateSignUp()) {
                 // submit sign up form
-                axios.post("http://localhost:3333/signup", {
+                axios.post("http://192.168.0.10:3333/signup", {
                     email: this.state.email,
                     password: this.state.password,
                     passwordc: this.state.passwordc
                 })
-                    .then(function (response) {
-                        console.log(response);
+                    .then(response => {
+                        if (response.data.registered) {
+                            this.setState({ registered: true, errors: response.data.errors }, () => {
+                                setTimeout(this.navigate, 2500);
+                            });
+                        } else {
+                            this.setState({ registered: false, errors: response.data.errors });
+                        }
                     })
-                    .catch(function (error) {
+                    .catch(error => {
                         console.log(error);
                     });
+            } else {
+                console.log("Auth form inputs are invalid");
             }
-        } else {
-            console.log("Form Inputs are Invalid");
         }
+
     }
 
     navigate = (e) => {
         this.setState({
             login: !this.state.login,
+            registered: false,
             email: "",
             password: "",
             passwordc: "",
@@ -98,7 +117,7 @@ class Home extends Component {
                 <div className="login-form">
                     <div className="logo-container">
                         <img src={Logo} alt="logo" className="logo" />
-                        <h1 className="form-header">MOVIESDB <i style={{ color: "#00D474" }}>STORE</i></h1>
+                        <h1 className="form-header">MOVIESDB <i style={{ color: "#00D474" }}>STREAM</i></h1>
                     </div>
                     <p className="form-text">
                         {this.state.login ?
@@ -145,6 +164,7 @@ class Home extends Component {
                     {this.state.login ?
                         <p className="form-text forget" name="forget">RESET THE PASSWORD</p> : null
                     }
+                    {this.state.registered ? <p className="form-text">the confirmation email has been sent</p> : null}
                     <button className="form-btn" onClick={this.submitForm} style={{
                         backgroundColor: this.state.login ? "#00D474" : "white",
                         color: this.state.login ? "white" : "black"

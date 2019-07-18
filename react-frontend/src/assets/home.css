@@ -4,6 +4,8 @@
     position:relative;
     background-color:rgba(0,0,0,.85);
     z-index:500;
+    display:flex;
+    justify-content: center;
 }
 .background {
     position:absolute;
@@ -21,6 +23,7 @@
 
 .login-form {
     width:100%;
+    max-width:600px;
     height:100%;
     position:relative;
     display:flex;
@@ -100,6 +103,7 @@
     font-size:16px;
     cursor: pointer;
     margin:15px;
+    outline: 0px;
 }
 
 

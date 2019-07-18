@@ -1,16 +1,16 @@
 USE themoviedb;
-CREATE TABLE unconfirmed_users(
-    email VARCHAR(300) NOT NULL PRIMARY KEY UNIQUE,
-    password VARCHAR(500) NOT NULL,
-    confirmation_token VARCHAR(500) NOT NULL
+CREATE TABLE unconfirmed(
+    email VARCHAR(150) NOT NULL PRIMARY KEY UNIQUE,
+    password VARCHAR(150) NOT NULL,
+    confirmation_token VARCHAR(150) NOT NULL
 );
 CREATE TABLE users(
-    email VARCHAR(300) NOT NULL PRIMARY KEY UNIQUE,
-    password VARCHAR(500) NOT NULL
+    email VARCHAR(150) NOT NULL PRIMARY KEY UNIQUE,
+    password VARCHAR(150) NOT NULL
 );
 CREATE TABLE sessions(
-    token VARCHAR(1000) NOT NULL UNIQUE,
-    email VARCHAR(300) NOT NULL,
+    token VARCHAR(150) NOT NULL UNIQUE,
+    email VARCHAR(150) NOT NULL,
     FOREIGN KEY (email) REFERENCES users(email)
     ON DELETE CASCADE ON UPDATE CASCADE
 );

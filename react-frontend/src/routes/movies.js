@@ -1,7 +1,9 @@
 import React, { Component } from "react";
-import { ShoppingCart, Search } from "react-feather";
+import { Menu, Search } from "react-feather";
 import "../assets/movies.css";
 import Logo from '../assets/logo.png';
+import Fav from '../assets/like.png';
+import FavOn from '../assets/red-like.png';
 import NoImage from '../assets/imagenf.png';
 import axios from "axios";
 import {
@@ -69,14 +71,25 @@ class Movies extends Component {
             e.target.blur();
         }
     }
+
+    // Add a Movie to the user's favourites list
+    favourite = e => {
+        if (e.target.name === "like") {
+            e.target.name = "like-on";
+            e.target.src = FavOn;
+        } else {
+            e.target.name = "like";
+            e.target.src = Fav;
+        }
+    }
     render() {
         return (
-            <React.Fragment>
+            <div className="main-container">
                 <div className="bar" >
                     <div className="nav">
                         <img className="logo" src={Logo} alt="logo" />
-                        <h1 className="logo-header">MOVIESDB STORE</h1>
-                        <ShoppingCart color="gray" size={30} style={{ position: "absolute", right: 15 }} />
+                        <h1 className="logo-header">MOVIESDB STREAM</h1>
+                        <Menu color="white" size={30} style={{ position: "absolute", right: 15 }} />
                     </div>
                     <input className="search" type="text" name="search"
                         spellCheck="false" autoCorrect="false"
@@ -88,14 +101,14 @@ class Movies extends Component {
                     />
                     <Search color="white" size={20} className="search-logo" />
                 </div>
-                <div className="movies-container">
-                    {/* List of Buttons to get movies */}
-                    <div className="links-list">
-                        <button className="get-btn get-btn-on" onClick={this.getMovies}>TRENDING
+                {/* List of Buttons to get movies */}
+                <div className="links-list">
+                    <button className="get-btn get-btn-on" onClick={this.getMovies}>TRENDING
                          </button>
-                        <button onClick={this.getMovies} className="get-btn">UPCOMING</button>
-                        <button onClick={this.getMovies} className="get-btn">TOP</button>
-                    </div>
+                    <button onClick={this.getMovies} className="get-btn">UPCOMING</button>
+                    <button onClick={this.getMovies} className="get-btn">TOP</button>
+                </div>
+                <div className="movies-container">
                     {/* Movies Array */}
                     {this.state.movies ? this.state.movies.map((movie, i) => (
                         <div className="movie" key={i}>
@@ -116,16 +129,22 @@ class Movies extends Component {
                                         trailColor: "gray",
                                         textSize: 25,
                                     })}
+
                                 />
                                 <div className="name-date">
                                     <h3 className="movie-name">{movie.title}</h3>
                                     <h4 className="movie-date">{movie.release_date}</h4>
                                 </div>
+                                <img className="favourite"
+                                    src={Fav} name="like"
+                                    alt="favourite"
+                                    title="add to favourites"
+                                    onClick={this.favourite} />
                             </div>
                         </div>
                     )) : null}
                 </div>
-            </React.Fragment>
+            </div>
         )
     }
 }

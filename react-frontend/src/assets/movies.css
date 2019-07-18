@@ -1,4 +1,9 @@
-@import-normalize;
+.main-container {
+    margin-top:100px;
+    width:100%;
+    height:auto;
+    z-index:5000;
+}
 .bar{
     width:100%;
     height:100px;
@@ -66,6 +71,10 @@
 .links-list {
     width:auto;
     margin:110px 5px 10px 5px;
+    position:absolute;
+    top:2px;
+    left:2px;
+    z-index:150;
 }
 
 .get-btn{
@@ -85,32 +94,54 @@
 }
 
 .movies-container{
-    margin-top:100px;
+    max-width:1250px;
+    position:relative;
+    display:grid;
+    grid-template-columns: repeat(auto-fit,minmax(320px,1fr));
+    grid-gap:20px;
+    left:50%;
+    transform:translateX(-50%);
+    padding-top:60px;
 }
 
 .movie {
-    width:100%;
+    width:97%;
+    height:300px;
     position: relative;
     display:flex;
     flex-direction: column;
+    align-self:stretch;
     align-items:center;
     justify-content: center;
-    margin-bottom:5px;
+    margin-bottom:10px;
+    left:50%;
+    transform:translateX(-50%);
 }
 .movie-poster{
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
-    width:95%;
-    height:200px;
+    width:97%;
+    height:225px;
+    cursor:pointer;
 }
-
-.poster-overlay{
-
+@keyframes flash {
+	0% {
+		opacity: .4;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+.movie-poster:hover{
+    opacity: 1;
+	animation: flash 1.5s;
 }
 
 .movie-info{
-    width:95%;
-    height:auto;
+    width:97%;
+    height:75px;
+    position:relative;
+    padding:10px 50px 10px 10px;
     border:1px solid gray;
     border-top:0px;
     border-bottom-left-radius: 5px;
@@ -118,7 +149,14 @@
     display:flex;
     align-items:center;
     justify-content: flex-start;
-    padding:5px;
+}
+
+.favourite {
+    height:30px;
+    width:30px;
+    position:absolute;
+    right:15px;
+    cursor: pointer;
 }
 
 .name-date{
@@ -130,7 +168,7 @@
 .movie-name{
     font-family:Basker;
     color:white;
-    font-size:16px;
+    font-size:14px;
     margin:2px;
     line-height: 18px;
 }

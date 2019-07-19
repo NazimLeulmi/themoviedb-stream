@@ -1,4 +1,3 @@
-let createError = require('http-errors');
 let express = require('express');
 let path = require('path');
 let logger = require('morgan');
@@ -6,16 +5,17 @@ let helmet = require('helmet')
 let cors = require('cors');
 let mysql = require('mysql');
 let bcrypt = require('bcryptjs');
-let nodemailer = require('nodemailer');
 let randomBytes = require('crypto').randomBytes;
-let cfg = require('./config');
+let validateSignIn = require("./validation").validateSignIn;
+let validateSignUp = require("./validation").validateSignUp;
+let confirmationEmail = require("./email");
 
 
 
 // mysql config
 let db = mysql.createConnection({
   host: "localhost",
-  user: "dev",
+  user: "ry",
   password: "11223344",
   database: "themoviedb"
 });
@@ -38,33 +38,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Auth Form Validation functions
-let validateEmail = (email) => {
-  var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-  return re.test(String(email).toLowerCase());
-}
-let validateSignUp = (email, password, passwordc) => {
-  let errors = { email: "", password: "", passwordc: "" }
-  if (email === null || email === undefined || email === "") {
-    errors.email = "the email is a required field";
-  }
-  else if (validateEmail(email) === false) {
-    errors.email = "the email is invalid";
-  }
-  if (password === null || password === undefined || password === "") {
-    errors.password = "the password is a required field"
-  }
-  else if (password.length < 8) {
-    errors.password = "the password has to be at least 8 characters"
-  }
-  if (password !== "" && passwordc !== password) {
-    errors.passwordc = "the two passwords must match";
-  }
-  if (errors.email + errors.password + errors.passwordc !== "") {
-    return { isValid: false, errors };
-  }
-  return { isValid: true, errors };
-}
+
 
 app.get("/", (req, res) => {
   res.json({ root: "success" });
@@ -104,43 +78,12 @@ app.post("/signup", (req, res) => {
                   // Store user's email + hashed password in the unconfirmed_users table
                   db.query(`INSERT INTO unconfirmed_users (email,password,token) VALUES ('${email}','${hash}','${token}')`, (err, result) => {
                     if (err) throw err;
-
-                    // create reusable transporter object using the default SMTP transport
-
-                    let template = `
-                    <html>
-                      <body>
-                        <div id="container">
-                        <img src="${cfg.logo}" alt="logo" width="42" height="42">
-                         <h3>Registration confirmation</h3>
-                          <p> Please click the link bellow to confirm your registeration </p>
-                          <a href="http://192.168.0.10:3000/confirm/${token}"> Confirmation Link </a>
-                       </div>
-                       </body>
-                      </html>
-                    `;
-
-                    let transporter = nodemailer.createTransport({
-                      host: "smtp.zoho.com",
-                      port: 587, // TLS port
-                      secure: false, // true for 465, false for other ports
-                      auth: {
-                        user: cfg.email,
-                        pass: cfg.password
-                      },
-                      tls: { rejectUnauthorized: false },
-                    });
-
-                    // send mail with defined transport object
-                    let info = transporter.sendMail({
-                      from: '"themoviedb-store" <nazim@ryanleulmi.com>', // sender address
-                      to: email, // list of receivers
-                      subject: "Registration confirmation", // Subject line
-                      html: template
-                    }).then(info => {
-                      console.log("confirmation email has been sent from nodejs");
-                      res.json({ registered: true, errors });
-                    }).catch(err => console.log(err));
+                    // send a confirmation email to activate the account
+                    confirmationEmail(token, email).then(() => {
+                      res.json({ registered: true, errors })
+                    }).catch(() => {
+                      res.json({ registered: false, errors })
+                    })
                   });
                 })
               });
@@ -175,23 +118,6 @@ app.post('/confirm', function (req, res) {
   })
 })
 
-
-let validateSignIn = (email, password) => {
-  let errors = { email: "", password: "" }
-  if (email === null || email === undefined || email === "") {
-    errors.email = "the email is a required field";
-  }
-  else if (validateEmail(email) === false) {
-    errors.email = "the email is invalid";
-  }
-  if (password === null || password === undefined || password === "") {
-    errors.password = "the password is a required field"
-  }
-  if (errors.email + errors.password !== "") {
-    return { isValid: false, errors };
-  }
-  return { isValid: true, errors };
-}
 
 app.post("/signin", (req, res) => {
   let { email, password } = req.body;
@@ -232,10 +158,6 @@ app.post("/signin", (req, res) => {
 })
 
 
-// catch 404 and forward to error handler
-app.use(function (req, res, next) {
-  next(createError(404));
-});
 
 
 app.listen(3333, () => console.log("express API running on port 3333"))

@@ -6,8 +6,7 @@ import axios from "axios";
 
 export default class Confirmation extends Component {
     state = {
-        email: "",
-        failed: false,
+        confirmed: false,
     };
     componentDidMount = () => {
         const { match: { params } } = this.props;
@@ -16,13 +15,13 @@ export default class Confirmation extends Component {
             token: params.token
         })
             .then(response => {
-                if (response.data.email) {
-                    this.setState({ email: response.data.email });
+                if (response.data.confirmed === true) {
+                    this.setState({ confirmed: true });
                     setTimeout(() => {
                         this.props.history.push('/')
                     }, 2500);
                 } else {
-                    this.setState({ failed: true });
+                    this.setState({ confirmed: false });
                     setTimeout(() => {
                         this.props.history.push('/')
                     }, 2500);
@@ -40,8 +39,9 @@ export default class Confirmation extends Component {
                 <img src={Logo} alt="logo" width="40" height="40" />
                 <h5 style={{ color: "white", marginLeft: 5, fontSize: 20 }}>CONFIRMATION</h5>
             </div>
-            {this.state.failed ? <p className="text">failed to confirm your account</p> : null}
-            {this.state.email ? <p className="text">{this.state.email} has been confirmed </p> : null}
+            {this.state.confirmed ? <p className="text">your account has been confirmed</p> :
+                <p className="text">your token is unvalid</p>
+            }
         </div>
     )
 }

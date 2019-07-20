@@ -1,5 +1,5 @@
 let nodemailer = require('nodemailer');
-let cfg = require('./config');
+let cfg = require('./.config');
 let transporter = nodemailer.createTransport({
     host: "smtp.zoho.com",
     port: 587, // TLS port

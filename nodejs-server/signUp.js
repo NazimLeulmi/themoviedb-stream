@@ -1,23 +1,14 @@
 // Sign up / register functions & queries
 let randomBytes = require('crypto').randomBytes;
-const mysql = require('mysql2/promise');
 const confirmationEmail = require("./email");
 const genSalt = require("bcryptjs").genSalt;
 const hash = require("bcryptjs").hash;
 
 
-let signUp = async (email, password) => {
+let signUp = async (email, password, pool) => {
    try {
       let error = "";
-      const pool = await mysql.createPool({
-         host: 'localhost',
-         user: 'ry',
-         database: 'themoviedb',
-         password: "11223344",
-         waitForConnections: true,
-         connectionLimit: 10,
-         queueLimit: 0
-      });
+
       let [users, fields] = await pool.query(`SELECT * from users where email="${email}"`);
       // check if the email isn't confirmed
       if (users.length !== 0 && users[0].confirmed === 0) {

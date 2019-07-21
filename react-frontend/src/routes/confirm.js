@@ -40,7 +40,7 @@ export default class Confirmation extends Component {
                 <h5 style={{ color: "white", marginLeft: 5, fontSize: 20 }}>CONFIRMATION</h5>
             </div>
             {this.state.confirmed ? <p className="text">your account has been confirmed</p> :
-                <p className="text">your token is unvalid</p>
+                <p className="text">your token is invalid</p>
             }
         </div>
     )

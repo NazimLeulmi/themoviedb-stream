@@ -2,12 +2,9 @@ import React, { Component } from "react";
 import "../assets/home.css";
 import { Mail, Lock } from "react-feather";
 import Logo from "../assets/logo.png";
-import axios from "axios";
+import { validateSignUp, validateSignIn } from "../functions/validation";
 
-function validateEmail(email) {
-   var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-   return re.test(String(email).toLowerCase());
-}
+
 
 class Home extends Component {
    state = {
@@ -18,6 +15,7 @@ class Home extends Component {
       passwordc: "",
       errors: { email: "", password: "", passwordc: "" }
    }
+
 
    handleInput = (e) => {
       console.log(e.target.name)
@@ -30,74 +28,13 @@ class Home extends Component {
          this.setState({ passwordc: e.target.value })
       }
    }
-   // Form Inputs Client Side Validation
-   validateSignUp = () => {
-      let errors = { email: "", password: "", passwordc: "" }
-      let { email, password, passwordc } = this.state;
-      if (email === null || email === undefined || email === "") {
-         errors.email = "the email is a required field";
-      }
-      else if (validateEmail(email) === false) {
-         errors.email = "the email is invalid";
-      }
-      if (password === null || password === undefined || password === "") {
-         errors.password = "the password is a required field"
-      }
-      else if (password.length < 8) {
-         errors.password = "the password has to be at least 8 characters"
-      }
-      if (password !== "" && passwordc !== password) {
-         errors.passwordc = "the two passwords must match";
-      }
-      if (errors.email + errors.password + errors.passwordc !== "") {
-         this.setState({ errors: errors });
-         return false;
-      }
-      return true;
-   }
+
 
    submitForm = () => {
-      if (this.state.login) {
-         // submit sign in form
-         axios.post("http://192.168.0.10:3333/signin", {
-            email: this.state.email,
-            password: this.state.password,
-         })
-            .then(response => {
-               console.log(response.data);
-               this.setState({ errors: response.data.errors });
-               if (response.data.login) {
-                  this.props.history.push("/movies");
-               }
-            })
-            .catch(error => {
-               console.log(error);
-            });
-      } else {
-         if (this.validateSignUp()) {
-            // submit sign up form
-            axios.post("http://192.168.0.10:3333/signup", {
-               email: this.state.email,
-               password: this.state.password,
-               passwordc: this.state.passwordc
-            })
-               .then(response => {
-                  console.log(response.data);
-                  if (response.data.registered === true) {
-                     this.setState({ registered: true, errors: response.data.errors }, () => {
-                        setTimeout(this.navigate, 2500);
-                     });
-                  } else {
-                     this.setState({ registered: false, errors: response.data.errors });
-                  }
-               })
-               .catch(error => {
-                  console.log(error);
-               });
-         } else {
-            console.log("Auth form inputs are invalid");
-         }
-      }
+      const { email, password, passwordc } = this.state;
+      const { isValid, errors } = validateSignUp(email, password, passwordc);
+      console.log("isValid?: ", isValid);
+      console.log("errors?: ", errors);
 
    }
 

@@ -5,7 +5,10 @@ const validateEmail = (email) => {
   return re.test(String(email).toLowerCase());
 }
 const validateAuthInputs = (email, password, passwordc) => {
-  let errors = { email: "", password: "" };
+  // Validation errors initial state
+  let errors = { email: "", password: "", passwordc: "" };
+
+  // Email Validation :-
   // Check if the email input field is empty
   if (email === null || email === undefined || email === "") {
     errors.email = "the email is a required field";
@@ -14,7 +17,9 @@ const validateAuthInputs = (email, password, passwordc) => {
   else if (validateEmail(email) === false) {
     errors.email = "the email is invalid";
   }
-  // Check if the email input field is empty
+
+  // Password Validation :-
+  // Check if the password input field is empty
   if (password === null || password === undefined || password === "") {
     errors.password = "the password is a required field"
   }
@@ -22,6 +27,7 @@ const validateAuthInputs = (email, password, passwordc) => {
   else if (passwordc !== null && passwordc !== undefined && password.length < 8) {
     errors.password = "the password has to be at least 8 characters"
   }
+  // OnSignUp only
   if (password !== "" && passwordc !== null && passwordc
     !== undefined && passwordc !== password) {
     errors.passwordc = "the two passwords must match";
@@ -31,7 +37,6 @@ const validateAuthInputs = (email, password, passwordc) => {
   }
   return { isValid: true, errors };
 }
-
 
 
 

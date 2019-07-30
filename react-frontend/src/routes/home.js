@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import "../assets/home.css";
 import { Mail, Lock } from "react-feather";
 import Logo from "../assets/logo.png";
-import { validateSignUp, validateSignIn } from "../functions/validation";
+import validateAuthInputs from "../functions/validation";
+import submitAuthForm from "../functions/postAuthForm";
 
 
 
@@ -31,11 +32,22 @@ class Home extends Component {
 
 
    submitForm = () => {
-      const { email, password, passwordc } = this.state;
-      const { isValid, errors } = validateSignUp(email, password, passwordc);
-      console.log("isValid?: ", isValid);
-      console.log("errors?: ", errors);
+      const { email, password, passwordc, login } = this.state;
+      // Form Input Validation
+      const { isValid, errors } = validateAuthInputs(email, password,
+         login ? null : passwordc);
+      this.setState({ errors });
+      if (isValid === false) {
+         return;
+      }
+      submitAuthForm(email, password, login ? null : passwordc)
+         .then(data => {
+            this.setState({ errors });
+            if (login) {
 
+            }
+         })
+         .catch(err => console.log(err));
    }
 
    navigate = (e) => {
@@ -86,7 +98,12 @@ class Home extends Component {
                   />
                   <Lock size={20} color="#00D474" className="input-logo" />
                </div>
-               {this.state.errors.password ? <p className="error">{this.state.errors.password}</p> : null}
+               {/* password error message */}
+               {this.state.errors.password ?
+                  <p className="error">
+                     {this.state.errors.password}
+                  </p> : null
+               }
                {this.state.login === false ?
                   <div className="form-group">
                      <input className="form-input" type="password" name="passwordc"

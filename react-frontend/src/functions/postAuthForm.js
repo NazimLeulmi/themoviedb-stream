@@ -1,12 +1,11 @@
 import axios from "axios";
-
 // Post Request {email,password,passwordc?} => 
 const submitAuthForm = (email, password, passwordc) => {
    let isLogin = true;
    if (passwordc !== null && passwordc !== undefined && passwordc !== "") {
       isLogin = false;
    }
-   return axios.post(`http://192.168.0.14:3333/sign${isLogin ? "In" : "Up"}`, {
+   return axios.post(`http://192.168.0.14:3333/sign${isLogin ? "in" : "up"}`, {
       email, password,
       passwordc: isLogin ? null : passwordc
    })

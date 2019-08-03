@@ -48,11 +48,11 @@ app.post("/signup", (req, res) => {
          if (data.error) {
             errors.email = data.error;
          }
-         return res.json({ registered: data.registered, errors })
+         return res.json({ auth: data.registered, errors })
       })
       .catch(err => {
          console.log(err);
-         return res.json({ registered: false, errors });
+         return res.json({ auth: false, errors });
       })
 })
 
@@ -82,6 +82,18 @@ app.post("/signin", (req, res) => {
       })
       .catch(err => res.json({ err }))
 })
+
+// Auto Login if the client has a valid authentication token
+app.post("/verify", async (req, res) => {
+   const { token } = req.body;
+   const sql = `SELECT * FROM sessions WHERE token="${token}"`;
+   const [sessions, fields] = await connection.query(sql);
+   if (sessions.length === 0) {
+      return res.json({ auth: false })
+   }
+   return res.json({ auth: true })
+})
+
 
 
 

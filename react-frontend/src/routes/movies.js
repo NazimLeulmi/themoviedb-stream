@@ -1,15 +1,12 @@
 import React, { Component } from "react";
-import { Menu, Search } from "react-feather";
+import { Menu, X } from "react-feather";
+import Search from "./components/search";
+import Movie from "./components/movie";
+import NavMenu from "./components/nav";
 import "../assets/movies.css";
 import Logo from '../assets/logo.png';
-import Fav from '../assets/like.png';
-import FavOn from '../assets/red-like.png';
-import NoImage from '../assets/imagenf.png';
 import axios from "axios";
-import {
-   CircularProgressbar,
-   buildStyles
-} from "react-circular-progressbar";
+
 import "react-circular-progressbar/dist/styles.css";
 
 
@@ -20,7 +17,8 @@ class Movies extends Component {
       this.state = {
          key: "fd17834fbad9e4168715ef1a542d7bce",
          search: "",
-         movies: []
+         movies: [],
+         nav: false
       }
    }
 
@@ -72,34 +70,37 @@ class Movies extends Component {
       }
    }
 
-   // Add a Movie to the user's favourites list
-   favourite = e => {
-      if (e.target.name === "like") {
-         e.target.name = "like-on";
-         e.target.src = FavOn;
+   nav = (e) => {
+      let nav = document.querySelector(".nav-menu");
+      if (this.state.nav) {
+         nav.classList.remove("menu-on");
       } else {
-         e.target.name = "like";
-         e.target.src = Fav;
+         nav.classList.add("menu-on");
       }
+      this.setState({ nav: !this.state.nav });
    }
+
    render() {
+      const { movies, nav } = this.state;
       return (
          <div className="main-container">
+            {/* Navigation Menu */}
+            <NavMenu />
+            {/* Static Nav Bar */}
             <div className="bar" >
                <div className="nav">
                   <img className="logo" src={Logo} alt="logo" />
                   <h1 className="logo-header">MOVIESDB STREAM</h1>
-                  <Menu color="white" size={30} style={{ position: "absolute", right: 15 }} />
+                  {!nav ?
+                     <Menu color="white" size={30} className="menu-icon" onClick={this.nav} />
+                     : <X color="white" size={30} className="menu-icon" onClick={this.nav} />
+                  }
+
                </div>
-               <input className="search" type="text" name="search"
-                  spellCheck="false" autoCorrect="false"
-                  autoCapitalize="false" autoComplete="false"
-                  value={this.state.search}
-                  placeholder="search for a movie"
-                  onKeyDown={this.dismissKeyboard}
-                  onChange={this.search}
+               {/* Search Input */}
+               <Search search={this.search} query={this.state.search}
+                  dismiss={this.dismissKeyboard}
                />
-               <Search color="white" size={20} className="search-logo" />
             </div>
             {/* List of Buttons to get movies */}
             <div className="links-list">
@@ -108,41 +109,11 @@ class Movies extends Component {
                <button onClick={this.getMovies} className="get-btn">UPCOMING</button>
                <button onClick={this.getMovies} className="get-btn">TOP</button>
             </div>
+            {/* Movies Array Container */}
             <div className="movies-container">
-               {/* Movies Array */}
-               {this.state.movies ? this.state.movies.map((movie, i) => (
-                  <div className="movie" key={i}>
-                     <div className="poster-overlay" />
-                     <img alt="poster" src={movie.poster_path || movie.backdrop_path ?
-                        `https://image.tmdb.org/t/p/original${movie.backdrop_path || movie.poster_path}` :
-                        NoImage
-                     }
-                        className="movie-poster" />
-                     <div className="movie-info">
-                        <CircularProgressbar
-                           value={movie.vote_average * 10}
-                           text={`${movie.vote_average * 10}%`}
-                           className="rating-circle"
-                           styles={buildStyles({
-                              textColor: "white",
-                              pathColor: "#00D474",
-                              trailColor: "gray",
-                              textSize: 25,
-                           })}
-
-                        />
-                        <div className="name-date">
-                           <h3 className="movie-name">{movie.title}</h3>
-                           <h4 className="movie-date">{movie.release_date}</h4>
-                        </div>
-                        <img className="favourite"
-                           src={Fav} name="like"
-                           alt="favourite"
-                           title="add to favourites"
-                           onClick={this.favourite} />
-                     </div>
-                  </div>
-               )) : null}
+               {movies ? movies.map((movie, i) =>
+                  <Movie movie={movie} key={i} />
+               ) : null}
             </div>
          </div>
       )

@@ -4,6 +4,7 @@ import { Mail, Lock } from "react-feather";
 import Logo from "../assets/logo.png";
 import validateAuthInputs from "../functions/validation";
 import submitAuthForm from "../functions/postAuthForm";
+import axios from "axios";
 
 
 
@@ -17,6 +18,19 @@ class Home extends Component {
       errors: { email: "", password: "", passwordc: "" }
    }
 
+   // Check if the client has a stored authentication token
+   componentDidMount = () => {
+      const token = localStorage.getItem("token");
+      if (token !== null && token !== "" && token !== undefined) {
+         axios.post("http://192.168.0.14:3333/verify", { token })
+            .then(res => {
+               if (res.data.auth) {
+                  this.props.history.push("/movies");
+               }
+            })
+            .catch(err => console.log(err))
+      }
+   }
 
    handleInput = (e) => {
       console.log(e.target.name)
@@ -42,9 +56,15 @@ class Home extends Component {
       }
       submitAuthForm(email, password, login ? null : passwordc)
          .then(data => {
-            this.setState({ errors });
-            if (login) {
-
+            this.setState({ errors: data.errors });
+            if (data.auth && data.token) {
+               localStorage.setItem("token", data.token);
+               this.props.history.push("/movies");
+               return;
+            }
+            if (data.auth) {
+               this.setState({ registered: true });
+               setTimeout(this.navigate, 3000);
             }
          })
          .catch(err => console.log(err));

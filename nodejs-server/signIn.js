@@ -4,16 +4,22 @@ const compare = require("bcryptjs").compare;
 
 
 let signIn = async (email, password, pool) => {
-   const error = "the email or password is invalid";
+   let error = "the email or password is invalid";
    try {
       const [users, fields] = await pool.query(`SELECT * FROM users where email="${email}"`);
-      // check if the user exists
+      // check if the user doesn't exist
       if (users.length === 0) {
          return { authenticated: false, error };
       }
+
       // check if the password is valid 
       const isValidPass = await compare(password, users[0].password);
       if (isValidPass === false) {
+         return { authenticated: false, error };
+      }
+      // check if the email needs to be confirmed
+      if(users[0].confirmed === 0){
+         error = "you need to verify your email address";
          return { authenticated: false, error };
       }
       // generate a session token

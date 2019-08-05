@@ -10,8 +10,8 @@ const Movie = (props) => {
    return (
       <div className="movie">
          <div className="poster-overlay" />
-         <img alt="poster" src={movie.poster_path || movie.backdrop_path ?
-            `https://image.tmdb.org/t/p/original${movie.backdrop_path || movie.poster_path}` :
+         <img alt="" src={movie.poster_path || movie.backdrop_path ?
+            `https://image.tmdb.org/t/p/w300${movie.backdrop_path || movie.poster_path}` :
             NoImage
          }
             className="movie-poster" />

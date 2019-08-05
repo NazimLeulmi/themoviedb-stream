@@ -65,6 +65,23 @@ body{
   src: url("./roboto.ttf");
 }
 
+button::-moz-focus-inner {
+  border: 0;
+}
+
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: white;
+  opacity: .65; 
+}
+
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+  color: white;
+}
+
+::-ms-input-placeholder { /* Microsoft Edge */
+  color: white;
+}
+
 
 
 

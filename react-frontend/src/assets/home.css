@@ -96,15 +96,16 @@
     font-weight:bolder;
     background:#00D474;
     color:white;
-    border:0px;
     min-height:40px;
     width:60%;
     border-radius:20px;
+    outline: none;
+    border:none;
     font-size:16px;
     cursor: pointer;
     margin:15px;
-    outline: 0px;
 }
+
 
 
 .nav-link {
@@ -127,9 +128,11 @@
 }
 
 .error {
-    color:red;
-    font-size:12px;
-    font-family: Roboto;
+    color:white;
+    opacity:.8;
+    font-size:13px;
+    font-family: Basker;
     width:80%;
     text-align: left;
+    margin:2px;
 }

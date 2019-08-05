@@ -5,6 +5,7 @@ import Logo from "../assets/logo.png";
 import validateAuthInputs from "../functions/validation";
 import submitAuthForm from "../functions/postAuthForm";
 import axios from "axios";
+import outlineInvalidInput from "../functions/outlineInput";
 
 
 
@@ -51,12 +52,14 @@ class Home extends Component {
       const { isValid, errors } = validateAuthInputs(email, password,
          login ? null : passwordc);
       this.setState({ errors });
+      outlineInvalidInput(errors, login);
       if (isValid === false) {
          return;
       }
       submitAuthForm(email, password, login ? null : passwordc)
          .then(data => {
             this.setState({ errors: data.errors });
+            outlineInvalidInput(data.errors, login);
             if (data.auth && data.token) {
                localStorage.setItem("token", data.token);
                this.props.history.push("/movies");
@@ -71,6 +74,8 @@ class Home extends Component {
    }
 
    navigate = (e) => {
+      outlineInvalidInput({ email: "", password: "", passwordc: "" },
+         this.state.login);
       this.setState({
          login: !this.state.login,
          registered: false,

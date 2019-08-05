@@ -4,6 +4,7 @@ import Search from "./components/search";
 import Movie from "./components/movie";
 import NavMenu from "./components/nav";
 import "../assets/movies.css";
+import "../assets/spinner.css";
 import Logo from '../assets/logo.png';
 import axios from "axios";
 
@@ -16,23 +17,48 @@ class Movies extends Component {
       super(props);
       this.state = {
          key: "fd17834fbad9e4168715ef1a542d7bce",
+         now: "TRENDING",
+         loading: false,
+         page: 1,
+         pages: 1,
          search: "",
          movies: [],
-         nav: false
+         nav: false,
+         height: window.innerHeight,
       }
    }
 
-   // Get Trending Movies
    componentDidMount = () => {
+      this.setState({ loading: true }, this.fetchMovies);
+      window.addEventListener("scroll", this.handleScroll);
+   }
+
+   // Get Trending Movies
+   fetchMovies = () => {
+      const { key, page, now } = this.state;
       // url to get the trending movies from the public api
-      const trending = `https://api.themoviedb.org/3/trending/movie/week?api_key=${this.state.key}`
+      let link = "";
+      if (now === "TRENDING") {
+         link = `https://api.themoviedb.org/3/trending/movie/week?api_key=${key}&page=${page}`;
+      } else {
+         let word = "";
+         if (now === "TOP RATED") {
+            word = "top_rated";
+         } else if (now === "POPULAR") {
+            word = "popular";
+         }
+         link = `https://api.themoviedb.org/3/movie/${word}?api_key=${key}&language=en-US&page=${page}`
+      }
       // actual get request to fetch the movies
-      axios.get(trending)
+      axios.get(link)
          .then(response => {
-            // handle success
+            const { results, page, total_pages } = response.data;
             console.log(response.data);
-            // results = trending movies array
-            this.setState({ movies: response.data.results });
+            this.setState({
+               movies: this.state.movies.concat(results),
+               page: page,
+               pages: total_pages,
+            });
          })
          .catch(error => {
             // handle error
@@ -41,8 +67,13 @@ class Movies extends Component {
    }
 
    getMovies = (e) => {
-      console.log(e.target.className);
-      console.log("clicked");
+      const btn = document.querySelector(".get-btn-on");
+      btn.classList.remove("get-btn-on");
+      const clicked = document.querySelector(`.get-btn[name=${e.target.name}]`);
+      clicked.classList.add("get-btn-on");
+      this.setState({ now: e.target.textContent, loading: "true", movies: [] },
+         this.fetchMovies
+      );
    }
 
    search = (e) => {
@@ -80,8 +111,30 @@ class Movies extends Component {
       this.setState({ nav: !this.state.nav });
    }
 
+
+   getMore = () => {
+      console.log("getting more data")
+      console.log("you reached the bottom");
+      this.setState({ page: this.state.page + 1, loading: true }, this.fetchMovies);
+   };
+
+   handleScroll = () => {
+      console.log("handling scroll");
+      const windowHeight = "innerHeight" in window ? window.innerHeight :
+         document.documentElement.offsetHeight;
+      const body = document.body;
+      const html = document.documentElement;
+      const docHeight = Math.max(body.scrollHeight, body.offsetHeight,
+         html.clientHeight, html.scrollHeight, html.offsetHeight);
+      const windowBottom = Math.round(windowHeight + window.pageYOffset);
+      if (windowBottom >= docHeight) {
+         this.getMore();
+      }
+   }
+
+
    render() {
-      const { movies, nav } = this.state;
+      const { movies, nav, loading } = this.state;
       return (
          <div className="main-container">
             {/* Navigation Menu */}
@@ -104,10 +157,15 @@ class Movies extends Component {
             </div>
             {/* List of Buttons to get movies */}
             <div className="links-list">
-               <button className="get-btn get-btn-on" onClick={this.getMovies}>TRENDING
-                         </button>
-               <button onClick={this.getMovies} className="get-btn">UPCOMING</button>
-               <button onClick={this.getMovies} className="get-btn">TOP</button>
+               <button name="TRENDING" className="get-btn get-btn-on"
+                  onClick={this.getMovies}>TRENDING
+               </button>
+               <button name="TOP" onClick={this.getMovies} className="get-btn">
+                  TOP RATED
+               </button>
+               <button name="POPULAR" onClick={this.getMovies} className="get-btn">
+                  POPULAR
+               </button>
             </div>
             {/* Movies Array Container */}
             <div className="movies-container">
@@ -115,6 +173,7 @@ class Movies extends Component {
                   <Movie movie={movie} key={i} />
                ) : null}
             </div>
+            {loading ? <div className="loader" /> : null}
          </div>
       )
    }

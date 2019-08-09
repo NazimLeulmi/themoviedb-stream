@@ -1,19 +1,20 @@
-const mysql = require('mysql2/promise');
+const mysql = require('mysql');
+const connection = mysql.createConnection({
+    host: '127.0.0.1',
+    port: '3306',
+    user: 'ry',
+    password: '11223344',
+    database: 'themoviedb'
+});
 
-module.exports = async () => {
-   try {
-      const pool = await mysql.createPool({
-         host: 'localhost',
-         user: 'ry',
-         database: 'themoviedb',
-         password: "11223344",
-         waitForConnections: true,
-         connectionLimit: 10,
-         queueLimit: 0
-      });
-      return pool;
-   }
-   catch (err) {
-      console.log(err)
-   }
-}
+connection.connect(error => {
+    if (error) {
+        console.log(error);
+    } else {
+        console.log('Connected to MySQL port 3306');
+    }
+});
+
+module.exports = connection;
+
+

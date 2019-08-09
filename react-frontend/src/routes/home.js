@@ -58,6 +58,7 @@ class Home extends Component {
       }
       submitAuthForm(email, password, login ? null : passwordc)
          .then(data => {
+            console.log(data);
             this.setState({ errors: data.errors });
             outlineInvalidInput(data.errors, login);
             if (data.auth && data.token) {

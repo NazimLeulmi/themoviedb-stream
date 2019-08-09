@@ -5,7 +5,7 @@ const submitAuthForm = (email, password, passwordc) => {
    if (passwordc !== null && passwordc !== undefined && passwordc !== "") {
       isLogin = false;
    }
-   return axios.post(`http://192.168.0.14:3333/sign${isLogin ? "in" : "up"}`, {
+   return axios.post(`http://192.168.0.14:3333/sign${isLogin ? "In" : "Up"}`, {
       email, password,
       passwordc: isLogin ? null : passwordc
    })

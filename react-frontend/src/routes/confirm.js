@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import Logo from "../assets/logo2.png";
 import "../assets/confirm.css";
 import axios from "axios";
+import {UserCheck,UserX} from "react-feather";
 
 
 export default class Confirmation extends Component {
@@ -15,6 +15,7 @@ export default class Confirmation extends Component {
          token: params.token
       })
          .then(response => {
+           console.log(response.data)
             if (response.data.confirmed === true) {
                this.setState({ confirmed: true });
                setTimeout(() => {
@@ -35,16 +36,15 @@ export default class Confirmation extends Component {
    render = () => (
       <div className="container">
          <div className="background" />
-         <div className="header">
-            <img src={Logo} alt="logo" width="40" height="40" />
-            <h5 style={{ color: "white", marginLeft: 5, fontSize: 20 }}>
-               CONFIRMATION
-            </h5>
-         </div>
-         {this.state.confirmed ? <p className="text">
-            your account has been confirmed
-            </p> : <p className="text">your token is invalid</p>
+         {this.state.confirmed?
+          <UserCheck size={50} style={{ margin: 10 }} color="white" />:
+          <UserX size={50} style={{ margin: 10 }} color="white" />
          }
+           <p className="notify-text">
+           {this.state.confirmed?
+             "Your account has been activated":"Your confirmation token is invalid"
+           }
+           </p>
       </div>
    )
 }

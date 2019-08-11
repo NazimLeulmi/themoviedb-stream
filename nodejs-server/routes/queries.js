@@ -17,6 +17,10 @@ module.exports = {
       const sql = `UPDATE users SET confirmed=1 ,token="verified"
         WHERE token="${token}"`
       let response = await db.query(sql);
+      console.log(response)
+      if(response[0].affectedRows === 0){
+        return false
+      }
       return true;
    },
    insertSession: async (token, email) => {

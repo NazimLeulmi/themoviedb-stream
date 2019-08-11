@@ -13,11 +13,12 @@ let transporter = nodemailer.createTransport({
 
 
 
+
 let sendMail = (token, email) => {
     // create an html basic template
     let template = `
     <html>
-    <body> 
+    <body>
         <div id="container">
         <img src="${cfg.logo}" alt="logo" width="42" height="42">
         <h3>Registration confirmation</h3>

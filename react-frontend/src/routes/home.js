@@ -67,8 +67,7 @@ class Home extends Component {
                return;
             }
             if (data.auth) {
-               this.setState({ registered: true });
-               setTimeout(this.navigate, 3000);
+               this.props.history.push("/notify");
             }
          })
          .catch(err => console.log(err));

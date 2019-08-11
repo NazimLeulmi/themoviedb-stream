@@ -7,32 +7,34 @@ const router = express.Router();
 const randomBytes = require('crypto').randomBytes;
 const compare = require("bcryptjs").compare;
 const validate = require("../../react-frontend/src/functions/validation");
-const getUsersByEmail = require("./queries").getUsersByEmail;
+const getUserByEmail = require("./queries").getUserByEmail;
 const insertUser = require("./queries").insertUser;
+const confirmUser = require("./queries").confirmUser;
 
 
 
 router.post("/", async (req, res) => {
    // Destructuring the data object
-   const { email, password } = req.body;
+   const { email, password, passwordc } = req.body;
+   console.log(email, password, passwordc);
    let error = "the email or password is invalid";
-   console.log("valid");
    console.log(`user is trying to sign in`);
-   const { isValid, errors } = validate(email, password, null);
+   const { isValid, errors } = validate(email, password, passwordc);
    if (isValid === false) {
       return res.json({ auth: isValid, errors });
    }
    // Query database to get a user by email
-   const response = getUsersByEmail(email);
-   const users = response._results;
-   console.log("Result:", users);
+   const user = await getUserByEmail(email);
+   console.log("response:", user);
    // check if the email needs to be confirmed 
-   if (users.length !== 0 && users[0].confirmed === 0) {
+   if (user !== null && user !== undefined && user.confirmed === 0) {
+      console.log("you need to confirm");
       errors.email = "you need to confirm your email";
       return res.json({ errors, auth: false });
    }
    // Check if th email belongs to another user
-   if (users.length !== 0) {
+   if (user !== null && user !== undefined) {
+      console.log("email has been taken");
       errors.email = "this email has been taken";
       return res.json({ errors, auth: false });
    }
@@ -43,9 +45,19 @@ router.post("/", async (req, res) => {
    // Hash the password with the generated salt
    const hashed = await hash(password, salt);
    // Insert a new database entry
-   const resp = insertUser(email, hashed, token);
+   const inserted = await insertUser(email, hashed, token);
    confirmationEmail(token, email);
-   return res.json({ errors, auth: true })
+   return res.json({ errors, auth: inserted })
 })
+
+
+router.post("/confirm", async (req, res) => {
+   // Destructuring the data object
+   const { token } = req.body;
+   console.log(`confirming ${token}`)
+   const confirmed = await confirmUser(token);
+   res.json({ confirmed });
+})
+
 
 module.exports = router;

@@ -8,7 +8,6 @@ import "../assets/spinner.css";
 import Logo from '../assets/logo.png';
 import axios from "axios";
 
-import "react-circular-progressbar/dist/styles.css";
 
 
 
@@ -31,6 +30,14 @@ class Movies extends Component {
    componentDidMount = () => {
       this.setState({ loading: true }, this.fetchMovies);
       window.addEventListener("scroll", this.handleScroll);
+      const token = localStorage.getItem("token");
+      if (token === null || token === "" || token === undefined) {
+         this.props.history.push("/");
+      }
+   }
+
+   componentWillUnmount = () => {
+      window.removeEventListener("scroll", this.handleScroll)
    }
 
    // Get Trending Movies
@@ -138,7 +145,6 @@ class Movies extends Component {
       return (
          <div className="main-container">
             {/* Navigation Menu */}
-            <NavMenu />
             {/* Static Nav Bar */}
             <div className="bar" >
                <div className="nav">
@@ -148,6 +154,7 @@ class Movies extends Component {
                      <Menu color="white" size={30} className="menu-icon" onClick={this.nav} />
                      : <X color="white" size={30} className="menu-icon" onClick={this.nav} />
                   }
+                  <NavMenu history={this.props.history} />
 
                </div>
                {/* Search Input */}

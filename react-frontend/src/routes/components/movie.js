@@ -4,6 +4,7 @@ import {
    CircularProgressbar, buildStyles
 } from "react-circular-progressbar";
 import NoImage from '../../assets/imagenf.png';
+import "react-circular-progressbar/dist/styles.css";
 
 const Movie = (props) => {
    const { movie } = props;

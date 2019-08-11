@@ -23,13 +23,12 @@ const validateAuthInputs = (email, password, passwordc) => {
   if (password === null || password === undefined || password === "") {
     errors.password = "the password is a required field"
   }
-  // Check if the password is too short only on signUp
-  else if (passwordc !== null && passwordc !== undefined && password.length < 8) {
+  // Check if the password is too short on signUp
+  else if (passwordc !== null && password.length < 8) {
     errors.password = "the password has to be at least 8 characters"
   }
   // OnSignUp only
-  if (password !== "" && passwordc !== null && passwordc
-    !== undefined && passwordc !== password) {
+  if (password !== "" && passwordc !== null && passwordc !== password) {
     errors.passwordc = "the two passwords must match";
   }
   if (errors.email + errors.password + errors.passwordc !== "") {

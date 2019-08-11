@@ -3,7 +3,6 @@ const path = require('path');
 const logger = require('morgan');
 const helmet = require('helmet');
 const cors = require('cors');
-const validateAuthInputs = require("../react-frontend/src/functions/validation");
 
 
 // Initialize express 
@@ -23,26 +22,11 @@ app.get("/", (req, res) => {
    return res.json({ root: "success" });
 })
 
-// app.post('/confirm', function (req, res) {
-//    const { token } = req.body;
-//    console.log(`confirming ${token}`);
-//    confirmation(token, connection)
-//       .then(confirmed => res.json({ confirmed }))
-//       .catch(error => res.json({ confirmed: false, error }))
-// })
 
 
 
-// Auto Login if the client has a valid authentication token
-app.post("/verify", async (req, res) => {
-   const { token } = req.body;
-   const sql = `SELECT * FROM sessions WHERE token="${token}"`;
-   const [sessions, fields] = await connection.query(sql);
-   if (sessions.length === 0) {
-      return res.json({ auth: false })
-   }
-   return res.json({ auth: true })
-})
+
+
 
 
 

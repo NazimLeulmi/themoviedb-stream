@@ -23,7 +23,7 @@ class Home extends Component {
    componentDidMount = () => {
       const token = localStorage.getItem("token");
       if (token !== null && token !== "" && token !== undefined) {
-         axios.post("http://192.168.0.14:3333/verify", { token })
+         axios.post("http://192.168.0.14:3333/signIn/verify", { token })
             .then(res => {
                if (res.data.auth) {
                   this.props.history.push("/movies");

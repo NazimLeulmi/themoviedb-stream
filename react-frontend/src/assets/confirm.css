@@ -2,12 +2,13 @@
     width:100vw;
     height:100vh;
     position:relative;
-    background-color:rgba(0,0,0,.85);
+    background-color:rgba(0,0,0,.45);
     z-index:500;
     font-family:Basker;
     display:flex;
     flex-direction: column;
     align-items:center;
+    justify-content: center;
 }
 .background {
     position:absolute;
@@ -24,7 +25,6 @@
 
 .header {
     display:flex;
-    width:100%;
     padding:15px;
     align-items:center;
 }
@@ -37,4 +37,26 @@
     position:absolute;
     top:50%;
     transform:translateY(-50%);
+}
+.notify-text {
+    z-index:2000;
+    color:white;
+    font-size:16px;
+    max-width:600px;
+    text-align:center;
+    margin:10px;
+}
+
+.notify-btn{
+    z-index:2000;
+    width:300px;
+    height:50px;
+    cursor: pointer;
+    background:#00d474;
+    color:white;
+    border:0px;
+    border-radius:2px;
+    margin:5px;
+    font-family: Futura;
+    font-size:18px;
 }

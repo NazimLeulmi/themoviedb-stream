@@ -12,7 +12,7 @@
     flex-direction: column;
     position:fixed;
     top:0;
-    background-color: #282C34;
+    background-color: #282c34;
     z-index:100000;
 }
 /* navigation bar logo */

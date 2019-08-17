@@ -39,4 +39,4 @@ const validateAuthInputs = (email, password, passwordc) => {
 
 
 
-module.exports = validateAuthInputs
+module.exports = validateAuthInputs;

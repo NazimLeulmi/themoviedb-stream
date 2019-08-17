@@ -2,7 +2,7 @@
     width:100vw;
     height:100vh;
     position:relative;
-    background-color:rgba(0,0,0,.45);
+    background-color:rgba(0,0,0,.85);
     z-index:500;
     font-family:Basker;
     display:flex;

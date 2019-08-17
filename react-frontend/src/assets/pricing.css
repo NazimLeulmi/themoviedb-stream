@@ -6,7 +6,11 @@
   display:flex;
   align-items:center;
   justify-content:center;
-  background-color:#282c34;
+  background-image:url("./form.jpg");
+  background-position:center;
+  background-size:cover;
+  background-repeat:no-repeat;
+}
 
 .pricing-container{
   flex:1;
@@ -22,6 +26,7 @@
 
 
 .pricing {
+  background:rgba(40,44,52,.85);
   position:relative;
   height:475px;
   width:85%;
@@ -33,6 +38,8 @@
   flex-direction:column;
   align-items:center;
   padding:20px;
+  margin-top:20px;
+  margin-bottom:20px;
 }
 
 

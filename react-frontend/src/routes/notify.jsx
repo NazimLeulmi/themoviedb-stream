@@ -24,7 +24,10 @@ export default class Notify extends Component {
             resend a new one by clicking the button below.
          </p>
          <button className="notify-btn">RESEND ACITIVISION EMAIL</button>
-         <button style={{ background: "white", color: "#00d474" }} className="notify-btn">
+        <button style={{ background: "white", color: "#00d474" }}
+                className="notify-btn"
+                onClick={()=>this.props.history.push("/")}
+        >
             LOGIN
          </button>
       </div>

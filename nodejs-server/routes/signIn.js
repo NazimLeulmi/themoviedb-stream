@@ -7,19 +7,21 @@ const getUserByEmail = require("./queries").getUserByEmail;
 const insertSession = require("./queries").insertSession;
 const deleteSession = require("./queries").deleteSession;
 const getSession = require("./queries").getSession;
+const updateFirstLogin = require("./queries").updateFirstLogin;
 
 
 router.post("/", async (req, res) => {
    // Destructuring the data object
    const { email, password } = req.body;
+   // Initial error 
    let error = "the email or password is invalid";
-   console.log(`user is trying to sign in`);
+   console.log(`${email} is trying to sign in`);
    // Form Input Validation
    const { isValid, errors } = validate(email, password, null);
    if (isValid === false) {
       return res.json({ auth: isValid, errors });
    }
-   // Query database to get a user by email
+   // Query Mysql database to get a user by email
    const user = await getUserByEmail(email);
    // check if the user doesn't exist
    if (user === null || user === undefined) {
@@ -37,16 +39,29 @@ router.post("/", async (req, res) => {
       errors.email = "you need to verify your email address";
       return res.json({ auth: false, errors });
    }
+   // Check if its a first login to display the pricing page
+   let firstLogin = false;
+   if (user.first_login === 1) {
+      firstLogin = true;
+      // Change first_login status in the database
+      console.log("First Login")
+      await updateFirstLogin(user.email);
+   }
    // generate a session token
    const token = await randomBytes(32).toString("hex");
    // create a new database entry
    const inserted = await insertSession(token, email);
+   const data = {
+      firstLogin, token, errors,
+      email: user.email,
+      auth: inserted,
+      plan: user.plan
+   }
    console.log(`${user.email} SIGNED IN`);
-   return res.json({ auth: inserted, token, errors });
-
+   return res.json(data);
 })
 
-router.delete("/signOut", async (req, res) => {
+router.post("/signOut", async (req, res) => {
    const { token } = req.body;
    const deleted = await deleteSession(token);
    console.log(`${token} SIGNED OUT`);

@@ -4,8 +4,8 @@ import { Mail, Lock } from "react-feather";
 import Logo from "../assets/logo.png";
 import validateAuthInputs from "../functions/validation";
 import submitAuthForm from "../functions/postAuthForm";
-import axios from "axios";
 import outlineInvalidInput from "../functions/outlineInput";
+import isAuth from "../functions/checkAuth";
 
 
 
@@ -20,16 +20,10 @@ class Home extends Component {
    }
 
    // Check if the client has a stored authentication token
-   componentDidMount = () => {
-      const token = localStorage.getItem("token");
-      if (token !== null && token !== "" && token !== undefined) {
-         axios.post("http://192.168.0.14:3333/signIn/verify", { token })
-            .then(res => {
-               if (res.data.auth) {
-                  this.props.history.push("/movies");
-               }
-            })
-            .catch(err => console.log(err))
+   componentDidMount = async () => {
+      // Check if the user is Authorised to access this route on the client
+      if (await isAuth() === true) {
+         return this.props.history.push("/movies");
       }
    }
 
@@ -58,16 +52,25 @@ class Home extends Component {
       }
       submitAuthForm(email, password, login ? null : passwordc)
          .then(data => {
-            console.log(data);
+            console.log("data", data)
             this.setState({ errors: data.errors });
             outlineInvalidInput(data.errors, login);
             if (data.auth && data.token) {
-               localStorage.setItem("token", data.token);
-               this.props.history.push("/movies");
+               localStorage.setItem("data", JSON.stringify({
+                  token: data.token,
+                  email: data.email,
+                  plan: data.plan
+               }));
+               if (data.firstLogin) {
+                  this.props.history.push("/pricing");
+               } else {
+                  this.props.history.push("/movies");
+               }
                return;
             }
             if (data.auth) {
                this.props.history.push("/notify");
+               return;
             }
          })
          .catch(err => console.log(err));

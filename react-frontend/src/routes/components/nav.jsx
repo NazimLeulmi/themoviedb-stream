@@ -4,12 +4,16 @@ import axios from "axios";
 const NavMenu = (props) => {
    const signOut = () => {
       console.log("SIGNING OUT");
-      const token = localStorage.getItem("token");
-      axios.delete("http://192.168.0.14:3333/signIn/signOut", { token })
+      const object = localStorage.getItem("data");
+      if (object == null || object === undefined) {
+         props.history.push("/");
+      }
+      const { token } = JSON.parse(object);
+      axios.post("http://localhost:3333/signIn/signOut", { token })
          .then(res => {
             if (res.data.out === true) {
                console.log(res.data.out);
-               localStorage.removeItem("token");
+               localStorage.removeItem("data");
                props.history.push("/");
                return;
             }

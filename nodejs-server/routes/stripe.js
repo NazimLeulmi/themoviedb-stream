@@ -3,57 +3,67 @@ const router = express.Router();
 const stripe = require("stripe")("sk_test_4eC39HqLyjWDarjtT1zdp7dc");
 const getSession = require("./queries").getSession;
 
+const basicPlan = "plan_Fehv82dSyI23UT";
+const premiumPlan = "plan_Feht9aLk03zsX9";
 
 router.post("/", async (req, res) => {
   // Destructuring the data object
-  const { exp_year, exp_month, name, authToken } = req.body;
+  const { exp_year, exp_month, name, authToken, plan } = req.body;
+  console.log(req.body);
   // Check if the user is authorized to access this route
   const session = await getSession(authToken);
   if (session === null || session === undefined) {
-    res.json({ error: "unauthorized user" });
+    return res.json({ error: "unauthorized user" });
   } else {
     console.log(session);
   }
-  console.log(`user is trying to sign in`);
   if (name === null || name === "" || name === undefined) {
     return res.json({ error: "the name is a required field" });
   }
-  stripe.tokens.create({
-    card: {
-      number: '4242424242424242',
-      exp_month: parseInt(exp_month),
-      exp_year: parseInt(exp_year),
-      cvc: 255,
-    }
-  }, function (err, token) {
-    if (err) return res.json({ error: err });
-    else {
-      stripe.customers.create({
-        description: `${name} themoviedb subscriber`,
-        source: token.id // obtained with Stripe.js
-      }, function (err, customer) {
-        if (err) {
-          console.log(err); return;
-        }
-        stripe.subscriptions.create({
-          customer: "cus_FegAf4tEi8rXWt",
-          items: [
-            {
-              plan: "plan_Feg4VBMcm18zJq",
-            },
-          ]
-        }, function (err, subscription) {
-          // asynchronously called
-        }
+  // Create a stripe token to access stripe's API
+  stripe.tokens.create(
+    {
+      card: {
+        number: "4242424242424242",
+        exp_month: parseInt(exp_month),
+        exp_year: parseInt(exp_year),
+        cvc: 255
+      }
+    },
+    function(err, token) {
+      if (err) return res.json({ error: "Failed to create token" });
+      else {
+        // Create a customer associated with this his credit card
+        stripe.customers.create(
+          {
+            description: `${name} themoviedb subscriber`,
+            source: token.id // obtained with Stripe.js
+          },
+          function(err, customer) {
+            if (err) return res.json({ error: "Failed to create customer" });
+            console.log("customer", customer);
+            stripe.subscriptions.create(
+              {
+                customer: customer.id,
+                items: [
+                  {
+                    plan: "premium"
+                  }
+                ]
+              },
+              function(err, subscription) {
+                if (err) {
+                  console.log(err);
+                  return;
+                }
+                res.json(subscription);
+              }
+            );
+          }
         );
-      });
+      }
     }
-
-  });
-})
-
-
-
-
+  );
+});
 
 module.exports = router;

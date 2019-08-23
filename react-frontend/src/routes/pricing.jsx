@@ -6,7 +6,6 @@ import Basic from "../assets/basic.png";
 import Pro from "../assets/pro.png";
 import isAuth from "../functions/checkAuth";
 
-
 export default class Pricing extends Component {
   constructor(props) {
     super(props);
@@ -19,18 +18,22 @@ export default class Pricing extends Component {
     this.state = { email, plan };
   }
 
-  componentDidMount = async (e) => {
+  componentDidMount = async e => {
     // Check if the user is Authorised to access this route on the client
-    if (await isAuth() !== true) {
+    if ((await isAuth()) !== true) {
       return this.props.history.push("/");
     }
-
-  }
+  };
 
   handleClick = (plan, e) => {
     e.preventDefault();
-    console.log("plan:", plan)
-  }
+    console.log("plan:", plan);
+    console.log("what to do ??:", e.target.textContent);
+    this.props.history.push({
+      pathname: "/payment",
+      state: { plan, action: e.target.textContent }
+    });
+  };
   render = () => (
     <div className="pc-container">
       <div className="pricing-container">
@@ -50,8 +53,11 @@ export default class Pricing extends Component {
           <p className="field">
             <strong>Movies</strong>10
           </p>
-          <button className="sub-btn" onClick={this.handleClick.bind(this, "free")}>
-            {this.state.plan === "free" ? "CONTINUE" : "CANCEL SUBSCRIPTION"}
+          <button
+            className="sub-btn"
+            onClick={this.handleClick.bind(this, "free")}
+          >
+            {this.state.plan === 0 ? "CONTINUE" : "CANCEL SUBSCRIPTION"}
           </button>
         </div>
         <div className="pricing">
@@ -70,10 +76,15 @@ export default class Pricing extends Component {
           <p className="field">
             <strong>Movies</strong>unlimited
           </p>
-          <button className="sub-btn" onClick={this.handleClick.bind(this, "basic")}>
-            {this.state.plan === "basic" ? "CONTINUE" :
-              this.state.plan === "premium" ? "DOWNGRADE" : "SUBSCRIBE"
-            }
+          <button
+            className="sub-btn"
+            onClick={this.handleClick.bind(this, "basic")}
+          >
+            {this.state.plan === 0
+              ? "SUBSCRIBE"
+              : this.state.plan === 1
+              ? "CONTINUE"
+              : "DOWNGRADE"}
           </button>
         </div>
         <div className="pricing">
@@ -92,11 +103,18 @@ export default class Pricing extends Component {
           <p className="field">
             <strong>Movies</strong>unlimited
           </p>
-          <button className="sub-btn" onClick={this.handleClick.bind(this, "premium")}>
-            {this.state.plan === "premium" ? "CONTINUE" : "SUBSCRIBE"}
+          <button
+            className="sub-btn"
+            onClick={this.handleClick.bind(this, "premium")}
+          >
+            {this.state.plan === 0
+              ? "SUBSCRIBE"
+              : this.state.plan === 2
+              ? "UPGRADE"
+              : "CONTINUE"}
           </button>
         </div>
       </div>
     </div>
-  )
+  );
 }

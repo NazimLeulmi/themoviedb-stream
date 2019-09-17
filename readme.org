@@ -1,0 +1,14 @@
+#+TITLE: TMDB-STREAM DOCS
+
+* Index Page ( Authentication )
+**  Login / Sign In Process
+ 1. Client side form validation
+ 2. Client submits the login form {EMAIL , PASSWORD} to the server
+ 3. Server form validation
+ 4. MySQL query getUserByEmail() to get a user by their primary key
+ 5. If the user exists check if the password hash matches the user's stored hash
+ 6. Check if the user confirmed his account / email address
+ 7. If its the user's first login ,MySQL query to update it
+ 8. Generate an authentication token (32 secure random bytes)
+ 9. MySQL query to insert a new session
+ 10.If the user is subscribed , 

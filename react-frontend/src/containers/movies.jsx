@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Menu, X } from "react-feather";
-import Search from "./components/search";
+import Search from "./components/searchInput";
 import Movie from "./components/movie";
 import NavMenu from "./components/nav";
 import "../assets/movies.css";

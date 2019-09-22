@@ -1,11 +1,11 @@
 import { BrowserRouter, Route } from "react-router-dom";
 import React from "react";
-import Home from "./routes/home";
-import Movies from "./routes/movies";
-import Confirmation from "./routes/confirm";
-import Notify from "./routes/notify";
-import Pricing from "./routes/pricing";
-import Payment from "./routes/payment";
+import Home from "./containers/home";
+import Movies from "./containers/movies";
+import Confirmation from "./containers/confirm";
+import Notify from "./containers/notify";
+import Pricing from "./containers/pricing";
+import Payment from "./containers/payment";
 
 const ClientRouter = () => (
   <BrowserRouter>

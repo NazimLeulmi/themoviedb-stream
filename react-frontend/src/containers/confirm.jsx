@@ -11,7 +11,7 @@ export default class Confirmation extends Component {
    componentDidMount = () => {
       const { match: { params } } = this.props;
       console.log(params.token);
-      axios.post("http://192.168.42.190:3333/signUp/confirm", {
+      axios.post("http://192.168.42.210:3333/signUp/confirm", {
          token: params.token
       })
          .then(response => {

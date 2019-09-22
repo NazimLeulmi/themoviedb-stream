@@ -11,7 +11,7 @@ const isAuthoirsed = () => {
     if (token !== null && token !== "" && token !== undefined) {
         // post request to check if the authentication session is still valid
         // if the session exists ==> {auth:true}
-        return axios.post("http://192.168.42.190:3333/signIn/verify", { token })
+        return axios.post("http://192.168.42.210:3333/signIn/verify", { token })
             .then(res => {
                 if (res.data.auth) {
                     return true

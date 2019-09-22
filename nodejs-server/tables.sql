@@ -19,7 +19,7 @@ CREATE TABLE movies(
     title VARCHAR(150) NOT NULL PRIMARY KEY UNIQUE,
     releaseDate VARCHAR(150) NOT NULL,
     poster VARCHAR(150) NOT NULL,
-    rating INT NOT NULL DEFAULT 0,
+    rating INT NOT NULL DEFAULT 0
 );
 -- Junction / Joining table for a many to many relationship
 CREATE TABLE user_movies(

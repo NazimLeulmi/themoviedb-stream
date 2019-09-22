@@ -102,7 +102,6 @@ section {
 }
 body {
   line-height: 1;
-  background-color: #282c34;
 }
 ol,
 ul {
@@ -130,12 +129,9 @@ table {
   -moz-osx-font-smoothing: antialiased;
 }
 
-/* body{ */
-/* 	background-color:rgb(40, 44, 52); */
-/* } */
 @font-face {
-  font-family: "Futura";
-  src: url("./futura.ttf");
+  font-family: "Recoleta";
+  src: url("./recoleta.otf");
 }
 @font-face {
   font-family: "Basker";
@@ -152,7 +148,7 @@ button::-moz-focus-inner {
 
 ::placeholder {
   /* Chrome, Firefox, Opera, Safari 10.1+ */
-  color: white;
+  color: rgb("8,28,36");
   opacity: 0.65;
 }
 

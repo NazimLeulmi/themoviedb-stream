@@ -8,13 +8,6 @@ CREATE TABLE users(
     plan TINYINT NOT NULL DEFAULT 0,
     subscription VARCHAR(150) DEFAULT "free" -- stripe subscription id
 );
-CREATE TABLE sessions(
-    token VARCHAR(150) NOT NULL PRIMARY KEY UNIQUE,
-    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    email VARCHAR(150) NOT NULL,
-    FOREIGN KEY (email) REFERENCES users(email)
-    ON DELETE CASCADE ON UPDATE CASCADE
-);
 CREATE TABLE movies(
     title VARCHAR(150) NOT NULL PRIMARY KEY UNIQUE,
     releaseDate VARCHAR(150) NOT NULL,

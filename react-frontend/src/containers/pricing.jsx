@@ -1,10 +1,8 @@
 import React, { Component } from "react";
-import axios from "axios";
 import "../assets/pricing.css";
 import Free from "../assets/free.png";
 import Basic from "../assets/basic.png";
 import Pro from "../assets/pro.png";
-import isAuth from "../functions/checkAuth";
 
 export default class Pricing extends Component {
   constructor(props) {
@@ -19,10 +17,7 @@ export default class Pricing extends Component {
   }
 
   componentDidMount = async e => {
-    // Check if the user is Authorised to access this route on the client
-    if ((await isAuth()) !== true) {
-      return this.props.history.push("/");
-    }
+
   };
 
   handleClick = (plan, e) => {
@@ -39,7 +34,7 @@ export default class Pricing extends Component {
       <div className="pricing-container">
         <div className="pricing">
           <h1 className="pricing-header">FREE</h1>
-          <img width="65" src={Free} />
+          <img alt="free" width="65" src={Free} />
           <h1 className="price">0$/month</h1>
           <p className="field">
             <strong>Quality</strong>720p HD
@@ -62,7 +57,7 @@ export default class Pricing extends Component {
         </div>
         <div className="pricing">
           <h1 className="pricing-header">BASIC</h1>
-          <img width="65" src={Basic} />
+          <img alt="basic" width="65" src={Basic} />
           <h1 className="price">15$/month</h1>
           <p className="field">
             <strong>Quality</strong>1080p FHD
@@ -83,13 +78,13 @@ export default class Pricing extends Component {
             {this.state.plan === 0
               ? "SUBSCRIBE"
               : this.state.plan === 1
-              ? "CONTINUE"
-              : "DOWNGRADE"}
+                ? "CONTINUE"
+                : "DOWNGRADE"}
           </button>
         </div>
         <div className="pricing">
           <h1 className="pricing-header">PREMIUM</h1>
-          <img width="65" src={Pro} />
+          <img alt="premium" width="65" src={Pro} />
           <h1 className="price">30$/month</h1>
           <p className="field">
             <strong>Quality</strong>2160p UHD
@@ -110,8 +105,8 @@ export default class Pricing extends Component {
             {this.state.plan === 0
               ? "SUBSCRIBE"
               : this.state.plan === 2
-              ? "UPGRADE"
-              : "CONTINUE"}
+                ? "UPGRADE"
+                : "CONTINUE"}
           </button>
         </div>
       </div>

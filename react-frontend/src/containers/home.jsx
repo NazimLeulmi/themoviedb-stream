@@ -1,9 +1,6 @@
 import React, { Component } from "react";
-import validateAuthInputs from "../functions/validation";
-import submitAuthForm from "../functions/postAuthForm";
-import outlineInvalidInput from "../functions/outlineInput";
-import isAuth from "../functions/checkAuth";
-import AuthForm from "./components/authForm";
+import AuthForm from "../components/authForm";
+import axios from "axios";
 
 
 
@@ -19,64 +16,44 @@ class Home extends Component {
 
   // Check if the client has a stored authentication token
   componentDidMount = async () => {
+    console.log("Mounting Home");
     // Check if the user is Authorised to access this route on the client
-    if (await isAuth() === true) {
-      return this.props.history.push("/movies");
+    const res = await axios.get("http://192.168.42.208:3333/signIn/verify");
+    if (res.data.auth) {
+      this.props.history.push("/movies");
     }
   }
 
   handleInput = (e) => {
     console.log(e.target.name)
-    if (e.target.name === "email") {
-      this.setState({ email: e.target.value })
-    }
-    else if (e.target.name === "password") {
-      this.setState({ password: e.target.value })
-    } else {
-      this.setState({ passwordc: e.target.value })
-    }
+    this.setState({ [e.target.name]: e.target.value });
   }
 
-
-  submitForm = () => {
+  submitForm = (e) => {
+    e.preventDefault();
     const { email, password, passwordc, login } = this.state;
-    // Form Input Validation
-    const { isValid, errors } = validateAuthInputs(email, password,
-      login ? null : passwordc);
-    this.setState({ errors });
-    outlineInvalidInput(errors, login);
-    if (isValid === false) {
-      return;
-    }
-    submitAuthForm(email, password, login ? null : passwordc)
-      .then(data => {
-        console.log("data", data)
-        this.setState({ errors: data.errors });
-        outlineInvalidInput(data.errors, login);
-        if (data.auth && data.token) {
-          localStorage.setItem("data", JSON.stringify({
-            token: data.token,
-            email: data.email,
-            plan: data.plan
-          }));
-          if (data.firstLogin) {
-            this.props.history.push("/pricing");
-          } else {
+    console.log("submiting the auth form")
+    axios.post(`http://192.168.42.208:3333/sign${login ? "In" : "Up"}`, {
+      email, password, passwordc: login ? null : passwordc
+    })
+      .then(res => {
+        this.setState({ errors: res.data.errors }, () => {
+          if (res.data.auth) {
+            console.log("Signed In!!!")
             this.props.history.push("/movies");
+          } else if (res.data.registered) {
+            console.log("Signed Up!!!")
+            this.navigate();
           }
-          return;
-        }
-        if (data.auth) {
-          this.props.history.push("/notify");
-          return;
-        }
+        })
+        console.log(res.data);
       })
-      .catch(err => console.log(err));
+      .catch(error => {
+        console.log(error);
+      });
   }
 
   navigate = (e) => {
-    outlineInvalidInput({ email: "", password: "", passwordc: "" },
-      this.state.login);
     this.setState({
       login: !this.state.login,
       registered: false,
@@ -88,7 +65,16 @@ class Home extends Component {
   }
   render() {
     return (
-      <AuthForm />
+      <AuthForm
+        email={this.state.email}
+        password={this.state.password}
+        passwordc={this.state.passwordc}
+        login={this.state.login}
+        nav={this.navigate.bind(this)}
+        handleInput={this.handleInput}
+        submitForm={this.submitForm}
+        errors={this.state.errors}
+      />
     )
   }
 }

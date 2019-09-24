@@ -1,13 +1,12 @@
 import React, { Component } from "react";
-import { Menu, X } from "react-feather";
-import Search from "./components/searchInput";
-import Movie from "./components/movie";
-import NavMenu from "./components/nav";
+import Search from "../components/searchInput";
+import Movie from "../components/movie";
+import NavMenu from "../components/nav";
 import "../assets/movies.css";
 import "../assets/spinner.css";
 import Logo from '../assets/logo.png';
 import axios from "axios";
-import isAuth from "../functions/checkAuth";
+import { FontAwesomeIcon as Icon } from '@fortawesome/react-fontawesome'
 
 
 
@@ -29,10 +28,6 @@ class Movies extends Component {
    }
 
    componentDidMount = async () => {
-      // Check if the user is Authorised to access this route on the client
-      if (await isAuth() !== true) {
-         return this.props.history.push("/");
-      }
       // get the popular movies array from themoviedb public api
       this.setState({ loading: true }, this.fetchMovies);
       // scroll event to load more movies
@@ -144,7 +139,7 @@ class Movies extends Component {
 
 
    render() {
-      const { movies, nav, loading } = this.state;
+      const { movies, loading } = this.state;
       return (
          <div className="main-container">
             {/* Navigation Menu */}
@@ -153,10 +148,8 @@ class Movies extends Component {
                <div className="nav">
                   <img className="logo" src={Logo} alt="logo" />
                   <h1 className="logo-header">MOVIESDB STREAM</h1>
-                  {!nav ?
-                     <Menu color="white" size={30} className="menu-icon" onClick={this.nav} />
-                     : <X color="white" size={30} className="menu-icon" onClick={this.nav} />
-                  }
+                  <Icon color="white" size={30} className="menu-icon"
+                     onClick={this.nav} icon={this.nav ? "times" : "bar"} />
                   <NavMenu history={this.props.history} />
 
                </div>

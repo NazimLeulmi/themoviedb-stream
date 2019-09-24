@@ -1,9 +1,12 @@
 
-// Auth Form Validation functions
 const validateEmail = (email) => {
-  let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-  return re.test(String(email).toLowerCase());
+  if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
+    return (true)
+  }
+  console.log("You have entered an invalid email address!")
+  return (false)
 }
+
 const validateAuthInputs = (email, password, passwordc) => {
   // Validation errors initial state
   let errors = { email: "", password: "", passwordc: "" };
@@ -24,7 +27,7 @@ const validateAuthInputs = (email, password, passwordc) => {
     errors.password = "the password is a required field"
   }
   // Check if the password is too short on signUp
-  else if (passwordc !== null && password.length < 8) {
+  else if (passwordc !== null && passwordc !== undefined && password.length < 8) {
     errors.password = "the password has to be at least 8 characters"
   }
   // OnSignUp only

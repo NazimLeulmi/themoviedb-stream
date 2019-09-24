@@ -9,7 +9,7 @@ const NavMenu = (props) => {
          props.history.push("/");
       }
       const { token } = JSON.parse(object);
-      axios.post("http://192.168.42.210:3333/signIn/signOut", { token })
+      axios.post("http://192.168.42.208:3333/signIn/signOut", { token })
          .then(res => {
             if (res.data.out === true) {
                console.log(res.data.out);

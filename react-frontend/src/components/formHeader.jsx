@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import logo from "../../assets/video-camera.png";
+import logo from "../assets/video-camera.png";
 
 const Header = styled.h1`
     width:80%;

@@ -5,7 +5,7 @@ import {
   CardExpiryElement,
   CardCvcElement
 } from "react-stripe-elements";
-import "../../assets/payment.css";
+import "../assets/payment.css";
 // import CardSection from "./";
 
 class PaymentForm extends React.Component {
@@ -13,14 +13,12 @@ class PaymentForm extends React.Component {
     ev.preventDefault();
     // You can also use createToken to create tokens.
     // See our tokens documentation for more:
-    const { token, error } = await this.props.stripe.createToken({
+    const { error } = await this.props.stripe.createToken({
       type: "card",
       name: "Jenny Rosen"
     });
     if (error) console.log(error);
     return;
-    console.log(token);
-    // https://stripe.com/docs/stripe-js/reference#stripe-create-token
   };
 
   render() {

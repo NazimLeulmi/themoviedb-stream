@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import Logo from "../assets/logo2.png";
-// import "../assets/confirm.css";
-import { Mail } from "react-feather";
+import { FontAwesomeIcon as Icon} from '@fortawesome/react-fontawesome'
+
+
 
 
 export default class Notify extends Component {
@@ -11,7 +11,7 @@ export default class Notify extends Component {
    render = () => (
       <div className="container">
          <div className="background" />
-            <Mail size={50} style={{ margin: 10 }} color="white" />
+            <Icon size={50} style={{ margin: 10 }} color="white" icon="envelope" />
 
          <p className="notify-text">
          Activision email has been sent to your email address

@@ -1,9 +1,9 @@
-import Fav from '../../assets/like.png';
+import Fav from '../assets/like.png';
 import React from "react";
 import {
    CircularProgressbar, buildStyles
 } from "react-circular-progressbar";
-import NoImage from '../../assets/imagenf.png';
+import NoImage from '../assets/imagenf.png';
 import "react-circular-progressbar/dist/styles.css";
 
 const Movie = (props) => {

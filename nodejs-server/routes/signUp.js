@@ -6,7 +6,7 @@ const express = require("express");
 const router = express.Router();
 const randomBytes = require('crypto').randomBytes;
 const compare = require("bcryptjs").compare;
-const validate = require("../../react-frontend/src/functions/validation");
+const validate = require("../validation");
 const getUserByEmail = require("./queries").getUserByEmail;
 const insertUser = require("./queries").insertUser;
 const confirmUser = require("./queries").confirmUser;
@@ -17,8 +17,7 @@ router.post("/", async (req, res) => {
    // Destructuring the data object
    const { email, password, passwordc } = req.body;
    console.log(email, password, passwordc);
-   let error = "the email or password is invalid";
-   console.log(`user is trying to sign in`);
+   console.log(`user is trying to sign up`);
    const { isValid, errors } = validate(email, password, passwordc);
    if (isValid === false) {
       return res.json({ auth: isValid, errors });
@@ -46,8 +45,9 @@ router.post("/", async (req, res) => {
    const hashed = await hash(password, salt);
    // Insert a new database entry
    const inserted = await insertUser(email, hashed, token);
+   // Send an email to the user to activate the account
    confirmationEmail(token, email);
-   return res.json({ errors, auth: inserted })
+   return res.json({ errors, registered: inserted })
 })
 
 

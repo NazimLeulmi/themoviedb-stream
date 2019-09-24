@@ -1,11 +1,7 @@
-import React, { Component } from "react";
+import React from "react";
 import "../assets/payment.css";
-import Logo from "../assets/logo2.png";
-import paymentValidation from "../functions/paymentValidation";
-import axios from "axios";
-import isAuth from "../functions/checkAuth";
 import { StripeProvider } from "react-stripe-elements";
-import Checkout from "./components/checkout";
+import Checkout from "../components/checkout";
 
 const Payment = () => {
   return (

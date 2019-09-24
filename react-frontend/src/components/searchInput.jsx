@@ -1,6 +1,5 @@
 import React from "react";
-import { Search as Icon } from "react-feather";
-
+import { FontAwesomeIcon as Icon} from '@fortawesome/react-fontawesome'
 const Search = (props) => (
     <React.Fragment>
         <input className="search" type="text" name="search"
@@ -11,7 +10,7 @@ const Search = (props) => (
             onKeyDown={props.dismiss}
             onChange={props.search}
         />
-        <Icon color="white" size={20} className="search-logo" />
+        <Icon color="white" size={20} className="search-logo" icon="search" />
     </React.Fragment>
 )
 

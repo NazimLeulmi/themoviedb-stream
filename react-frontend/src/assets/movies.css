@@ -100,6 +100,7 @@
 }
 
 .movies-container{
+    height:100%;
     position:relative;
     max-width:2000px;
     display:grid;
@@ -131,17 +132,7 @@
 
 
 .movie {
-    width:97%;
-    height:300px;
-    position: relative;
-    display:flex;
-    flex-direction: column;
-    align-self:stretch;
-    align-items:center;
-    justify-content: center;
-    left:50%;
-    transform:translateX(-50%);
-    cursor: pointer;
+
 }
 
 .movie:hover .movie-poster{

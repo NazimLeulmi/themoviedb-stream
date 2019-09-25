@@ -130,16 +130,16 @@ table {
 }
 
 @font-face {
-  font-family: "Recoleta";
-  src: url("./recoleta.otf");
+  font-family: "Saira";
+  src: url("./saira.ttf") format("truetype");
 }
 @font-face {
   font-family: "Basker";
-  src: url("./basker.ttf");
+  src: url("./basker.ttf") format("truetype");
 }
 @font-face {
   font-family: "Roboto";
-  src: url("./roboto.ttf");
+  src: url("./roboto.ttf") format("truetype");
 }
 
 button::-moz-focus-inner {
@@ -161,3 +161,4 @@ button::-moz-focus-inner {
   /* Microsoft Edge */
   color: white;
 }
+

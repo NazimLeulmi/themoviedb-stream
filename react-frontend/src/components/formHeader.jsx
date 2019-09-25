@@ -6,7 +6,7 @@ const Header = styled.h1`
     width:80%;
     height:75px;
     display:flex;
-    font-family:Recoleta;
+    font-family:Pacifico;
     font-weight:500;
     letter-spacing:2px;
     font-size:36px;
@@ -23,7 +23,6 @@ const Logo = styled.img`
 const FormHeader = (props) => (
     <Header>
         <Logo src={logo} />
-        AFLAMY
     </Header>
 )
 

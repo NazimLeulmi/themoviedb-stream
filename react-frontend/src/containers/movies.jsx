@@ -1,12 +1,9 @@
 import React, { Component } from "react";
-import Search from "../components/searchInput";
-import Movie from "../components/movie";
-import NavMenu from "../components/nav";
 import "../assets/movies.css";
 import "../assets/spinner.css";
-import Logo from '../assets/logo.png';
 import axios from "axios";
-import { FontAwesomeIcon as Icon } from '@fortawesome/react-fontawesome'
+import MoviesList from "../components/moviesList";
+
 
 
 
@@ -28,6 +25,14 @@ class Movies extends Component {
    }
 
    componentDidMount = async () => {
+      console.log("Mounting Movies");
+      // Check if the user is loged in 
+      const res = await axios.get("/signIn/verify", {
+         withCredentials: true
+      })
+      if (!res.data.user) {
+         return this.props.history.push("/");
+      }
       // get the popular movies array from themoviedb public api
       this.setState({ loading: true }, this.fetchMovies);
       // scroll event to load more movies
@@ -138,46 +143,12 @@ class Movies extends Component {
    }
 
 
-   render() {
-      const { movies, loading } = this.state;
-      return (
-         <div className="main-container">
-            {/* Navigation Menu */}
-            {/* Static Nav Bar */}
-            <div className="bar" >
-               <div className="nav">
-                  <img className="logo" src={Logo} alt="logo" />
-                  <h1 className="logo-header">MOVIESDB STREAM</h1>
-                  <Icon color="white" size={30} className="menu-icon"
-                     onClick={this.nav} icon={this.nav ? "times" : "bar"} />
-                  <NavMenu history={this.props.history} />
 
-               </div>
-               {/* Search Input */}
-               <Search search={this.search} query={this.state.search}
-                  dismiss={this.dismissKeyboard}
-               />
-            </div>
-            {/* List of Buttons to get movies */}
-            <div className="links-list">
-               <button name="TRENDING" className="get-btn get-btn-on"
-                  onClick={this.getMovies}>TRENDING
-               </button>
-               <button name="TOP" onClick={this.getMovies} className="get-btn">
-                  TOP RATED
-               </button>
-               <button name="POPULAR" onClick={this.getMovies} className="get-btn">
-                  POPULAR
-               </button>
-            </div>
-            {/* Movies Array Container */}
-            <div className="movies-container">
-               {movies ? movies.map((movie, i) =>
-                  <Movie movie={movie} key={i} />
-               ) : null}
-            </div>
-            {loading ? <div className="loader" /> : null}
-         </div>
+
+   render() {
+      const { movies } = this.state;
+      return (
+         <MoviesList movies={movies} />
       )
    }
 }

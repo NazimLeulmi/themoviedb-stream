@@ -3,7 +3,6 @@ import AuthForm from "../components/authForm";
 import axios from "axios";
 
 
-
 class Home extends Component {
   state = {
     login: true,
@@ -17,9 +16,11 @@ class Home extends Component {
   // Check if the client has a stored authentication token
   componentDidMount = async () => {
     console.log("Mounting Home");
-    // Check if the user is Authorised to access this route on the client
-    const res = await axios.get("http://192.168.42.208:3333/signIn/verify");
-    if (res.data.auth) {
+    // Check if the user is loged in 
+    const res = await axios.get("/signIn/verify", {
+      withCredentials: true
+    })
+    if (res.data.user) {
       this.props.history.push("/movies");
     }
   }
@@ -33,17 +34,17 @@ class Home extends Component {
     e.preventDefault();
     const { email, password, passwordc, login } = this.state;
     console.log("submiting the auth form")
-    axios.post(`http://192.168.42.208:3333/sign${login ? "In" : "Up"}`, {
+    axios.post(`/sign${login ? "In" : "Up"}`, {
       email, password, passwordc: login ? null : passwordc
     })
       .then(res => {
         this.setState({ errors: res.data.errors }, () => {
           if (res.data.auth) {
             console.log("Signed In!!!")
-            this.props.history.push("/movies");
+            // this.props.history.push("/movies");
           } else if (res.data.registered) {
             console.log("Signed Up!!!")
-            this.navigate();
+            // this.navigate();
           }
         })
         console.log(res.data);

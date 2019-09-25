@@ -8,6 +8,7 @@ const updateFirstLogin = require("./queries").updateFirstLogin;
 
 router.post("/", async (req, res) => {
    // Destructuring the data object
+   console.log(req.body)
    const { email, password } = req.body;
    // Initial error 
    let error = "the email or password is invalid";
@@ -52,7 +53,7 @@ router.post("/", async (req, res) => {
       plan: user.plan,
       auth: true
    }
-   console.log(`${user.email} SIGNED IN`);
+   console.log(req.session, "SIGNED IN");
    return res.json(data);
 })
 
@@ -63,11 +64,11 @@ router.post("/signOut", async (req, res) => {
 })
 
 
-// Auto Login if the client has a valid authentication token
+// Keep the user loged in if the session didnt expire
 router.get("/verify", async (req, res) => {
-
    console.log(req.session);
-   return res.json({ auth: req.session.userId ? true : false });
+   return res.json(req.session);
+   // return res.json({ auth: req.session.userId ? true : false });
 })
 
 router.get("/", (req, res) => {

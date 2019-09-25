@@ -2,6 +2,7 @@
   "name": "tmdbstore",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://192.168.42.208:3333",
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.24",
     "@fortawesome/free-solid-svg-icons": "^5.11.1",
@@ -10,6 +11,8 @@
     "react": "^16.8.6",
     "react-circular-progressbar": "^2.0.1",
     "react-dom": "^16.8.6",
+    "react-dotdotdot": "^1.3.1",
+    "react-feather": "^2.0.3",
     "react-router-dom": "^5.0.1",
     "react-scripts": "3.0.1",
     "react-stripe-elements": "^4.0.1",

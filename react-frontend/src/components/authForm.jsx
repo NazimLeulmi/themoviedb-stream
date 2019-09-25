@@ -9,11 +9,11 @@ import FormBtn from './formBtn';
 import FormFooter from './formFooter';
 
 export const clr = {
-  white: "255,255,255",
-  green: "1,210,119",
-  darkBlue: "8,28,36",
-  solitude: "232,240,255",
-  hawkesBlue: "216,228,255"
+  black: "11, 12, 16",
+  darkblue: "32, 40, 51",
+  lightgray: "197, 198, 200",
+  lblue: "102, 252, 241",
+  sky: "70, 162, 159"
 }
 const Form = styled.form`
   width:100vw;
@@ -47,14 +47,14 @@ const Reset = styled.p`
   text-align:right;
   cursor: pointer;
   z-index:2;
-  font-size:18px;
+  font-size:16px;
 `;
 
 const Link = styled(Reset)`
   text-align:center;
   margin:15px;
   margin-bottom:140px;
-  font-size:22px;
+  font-size:18px;
 `;
 
 const Error = styled.p`
@@ -62,10 +62,10 @@ const Error = styled.p`
   max-width:320px;
   margin:5px;
   color:red;
-  font-family:Roboto;
+  font-family:Recoleta;
   text-align:left;
   z-index:2;
-  font-size:16px;
+  font-size:12px;
 `;
 
 const AuthForm = (props) => (

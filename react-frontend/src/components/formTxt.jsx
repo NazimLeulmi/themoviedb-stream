@@ -3,7 +3,6 @@ import styled from 'styled-components';
 
 const Text = styled.h1`
   width:80%;
-  font-family:Roboto;
   font-size:18px;
   margin:10px;
   color:rgb("8,28,36");

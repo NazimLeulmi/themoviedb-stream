@@ -6,18 +6,27 @@ import { clr } from "./authForm";
 
 const MoviesContainer = styled.div`
   position:relative;
+  /* max-width:2000px; */
   min-height:100vh;
-  width:100vw;
-  max-width:2000px;
   padding-top:100px;
-  display:grid;
-  grid-template-columns: repeat(auto-fit,minmax(450px,1fr));
-  grid-gap:20px;
   background:rgba(${clr.darkblue});
-  padding-bottom:10px; 
-  @media(min-width:800px) {
-    padding-left:85px;
-    padding-right:85px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  background:(255,255,255,.45);
+  @media(min-width:700px){
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    justify-items:center;
+    padding-right:10px;
+    padding-left:10px;
+  }
+  @media(min-width:1150px){
+    grid-template-columns:1fr 1fr 1fr;
+  }
+  @media(min-width:1500px){
+    grid-template-columns:450px 450px 450px;
+    justify-content:center;
   }
 `;
 

@@ -1,8 +1,6 @@
 import React, { Component } from "react";
-import { FontAwesomeIcon as Icon} from '@fortawesome/react-fontawesome'
 
-
-
+import { Mail } from "react-feather";
 
 export default class Notify extends Component {
    state = {
@@ -11,10 +9,9 @@ export default class Notify extends Component {
    render = () => (
       <div className="container">
          <div className="background" />
-            <Icon size={50} style={{ margin: 10 }} color="white" icon="envelope" />
-
+         <Mail size={50} style={{ margin: 10 }} color="white" />
          <p className="notify-text">
-         Activision email has been sent to your email address
+            Activision email has been sent to your email address
          </p>
          <p className="notify-text" style={{ color: "#00d474" }}>
             nazim@ryanleulmi.com
@@ -24,10 +21,10 @@ export default class Notify extends Component {
             resend a new one by clicking the button below.
          </p>
          <button className="notify-btn">RESEND ACITIVISION EMAIL</button>
-        <button style={{ background: "white", color: "#00d474" }}
-                className="notify-btn"
-                onClick={()=>this.props.history.push("/")}
-        >
+         <button style={{ background: "white", color: "#00d474" }}
+            className="notify-btn"
+            onClick={() => this.props.history.push("/")}
+         >
             LOGIN
          </button>
       </div>

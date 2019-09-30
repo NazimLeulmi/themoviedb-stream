@@ -6,14 +6,13 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const session = require('express-session')
 const MySQLStore = require('express-mysql-session')(session);
-const pool = require("./database");
 
 const options = {
-   host: 'localhost',
-   port: 3306,
-   user: 'tux',
-   password: '11223344',
-   database: 'tmdbsessions'
+  host: 'localhost',
+  port: 3306,
+  user: 'tux',
+  password: '11223344',
+  database: 'tmdbsessions'
 };
 
 const sessionStore = new MySQLStore(options);
@@ -22,20 +21,20 @@ const sessionStore = new MySQLStore(options);
 const app = express();
 app.use(helmet()); // security layer
 app.use(session({
-   key: "sid",
-   secret: "keyboard cat",
-   store: sessionStore,
-   resave: false,
-   saveUninitialized: false,
-   cookie: {
-      expires: false,
-      secure: false,
-      maxAge: 1000 * 60 * 60 * 24,
-      sameSite: false
-   },
+  key: "sid",
+  secret: "keyboard cat",
+  store: sessionStore,
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    expires: false,
+    secure: false,
+    maxAge: 1000 * 60 * 60 * 24,
+    sameSite: false
+  },
 }))
 
-// app.use(cors()); // cross-origin requests
+app.use(cors()); // cross-origin requests
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -44,9 +43,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(require("./routes"));
 
 
-
 app.get("/", (req, res) => {
-   return res.json({ root: "success" });
+  return res.json({ root: "success" });
 })
 
 

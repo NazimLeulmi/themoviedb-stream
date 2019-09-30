@@ -41,10 +41,10 @@ class Home extends Component {
         this.setState({ errors: res.data.errors }, () => {
           if (res.data.auth) {
             console.log("Signed In!!!")
-            // this.props.history.push("/movies");
+            this.props.history.push("/movies");
           } else if (res.data.registered) {
             console.log("Signed Up!!!")
-            // this.navigate();
+            return this.navigate();
           }
         })
         console.log(res.data);

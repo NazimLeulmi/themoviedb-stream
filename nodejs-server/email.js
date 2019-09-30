@@ -1,6 +1,7 @@
 let nodemailer = require('nodemailer');
 let cfg = require('./.config');
 let transporter = nodemailer.createTransport({
+    service:'Zoho',
     host: "smtp.zoho.com",
     port: 587, // TLS port
     secure: false, // true for 465, false for other ports
@@ -23,7 +24,7 @@ let sendMail = (token, email) => {
         <img src="${cfg.logo}" alt="logo" width="42" height="42">
         <h3>Registration confirmation</h3>
         <p> Please click the link bellow to confirm your registeration </p>
-        <a href="http://192.168.42.208:3000/confirm/${token}"> Confirmation Link </a>
+        <a href="http://192.168.42.210:3000/confirm/${token}"> Confirmation Link </a>
         </div>
     </body>
     </html>

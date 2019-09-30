@@ -123,23 +123,28 @@ table {
   border-spacing: 0;
 }
 
-* {
-  box-sizing: border-box;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: antialiased;
-}
+
 
 @font-face {
   font-family: "Saira";
   src: url("./saira.ttf") format("truetype");
 }
 @font-face {
-  font-family: "Basker";
-  src: url("./basker.ttf") format("truetype");
+  font-family: "Ubuntu";
+  src: url("./ubuntu.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Ubuntu Bold";
+  src: url("./ubuntu-bold.ttf") format("truetype");
 }
 @font-face {
   font-family: "Roboto";
   src: url("./roboto.ttf") format("truetype");
+}
+* {
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: antialiased;
 }
 
 button::-moz-focus-inner {

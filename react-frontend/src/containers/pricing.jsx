@@ -7,13 +7,7 @@ import Pro from "../assets/pro.png";
 export default class Pricing extends Component {
   constructor(props) {
     super(props);
-    const object = localStorage.getItem("data");
-    if (object === null && object !== undefined) {
-      return this.props.history.push("/");
-    }
-    // parse the json object from the string & destructure the object
-    const { email, plan } = JSON.parse(object);
-    this.state = { email, plan };
+    this.state = { email: "zugaga", plan: "free" };
   }
 
   componentDidMount = async e => {

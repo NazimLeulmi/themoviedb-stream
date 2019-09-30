@@ -4,9 +4,9 @@ import image from "../assets/index.jpg";
 import FormHeader from './formHeader';
 import FormTxt from "./formTxt";
 import FormInput from './formInput';
-import { faLock, faEnvelope } from '@fortawesome/free-solid-svg-icons'
 import FormBtn from './formBtn';
 import FormFooter from './formFooter';
+import { Mail, Lock } from "react-feather";
 
 export const clr = {
   black: "11, 12, 16",
@@ -25,6 +25,7 @@ const Form = styled.form`
   align-items:center;
   justify-content:center;
   z-index:1;
+  font-family:Ubuntu;
 `
 const Background = styled.div`
   position:absolute;
@@ -43,7 +44,6 @@ const Reset = styled.p`
   max-width:320px;
   margin:5px;
   color:rgb(8,28,36);
-  font-family:Recoleta;
   text-align:right;
   cursor: pointer;
   z-index:2;
@@ -62,11 +62,12 @@ const Error = styled.p`
   max-width:320px;
   margin:5px;
   color:red;
-  font-family:Recoleta;
   text-align:left;
   z-index:2;
   font-size:12px;
 `;
+
+const IconStyle = { position: "absolute", right: 15, color: "gray" };
 
 const AuthForm = (props) => (
   <Form>
@@ -75,19 +76,19 @@ const AuthForm = (props) => (
     <FormTxt login={props.login} />
     <FormInput type="email" value={props.email}
       placeholder="Email"
-      icon={faEnvelope} name="email" handleInput={props.handleInput}
+      icon={<Mail style={IconStyle} />} name="email" handleInput={props.handleInput}
     />
     {props.errors.email !== "" && <Error>{props.errors.email}</Error>}
     <FormInput type="password" value={props.password}
       placeholder="Password"
-      icon={faLock} name="password" handleInput={props.handleInput}
+      icon={<Lock style={IconStyle} />} name="password" handleInput={props.handleInput}
     />
     {props.errors.password !== "" && <Error>{props.errors.password}</Error>}
     {props.login ? <Reset>RESET PASSWORD</Reset> : null}
     {props.login === false ?
       <FormInput type="password" value={props.passwordc}
         placeholder="Password confirmation"
-        icon={faLock} name="passwordc" handleInput={props.handleInput}
+        icon={<Lock style={IconStyle} />} name="passwordc" handleInput={props.handleInput}
       /> : null
     }
     {props.errors.passwordc !== "" && <Error>{props.errors.passwordc}</Error>}

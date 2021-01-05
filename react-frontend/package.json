@@ -4,7 +4,7 @@
   "private": true,
   "proxy": "http://192.168.42.210:3333",
   "dependencies": {
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "react": "^16.8.6",
     "react-circular-progressbar": "^2.0.1",
     "react-dom": "^16.8.6",
